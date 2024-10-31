@@ -1,0 +1,45 @@
+setlocal
+@echo off
+
+:: Parse arguments
+:ARGPARSE
+    set _=%~1
+    if "%_:~,1%" == "/" (
+        if "%~1" == "/i" (
+            set interacitve=1
+        ) else if "%~1" == "/h" (
+            set help=1
+        )
+    )
+    set _=
+    shift
+    if not "%~1" == "" goto ARGPARSE
+if defined help (
+    echo "Usage: %0 [/i] [/h]"
+    echo ""
+    echo "Parameters:"
+    echo "    /i          Interacitve remove build direcotry."
+    echo "    /h          Show this help and quit."
+    goto :EOF
+)
+if defined %interacitve% (
+    set /p rmdirbuild="Are you sure you want to delete the directory 'build'? [Y/n]: "
+
+    if %rmdirbuild% == Y (
+        echo "The directory 'build' will now be deleted."
+        rmdir /S /Q build
+    )
+)
+
+CMAKE_BUILD_TYPE=Debug
+;; CMAKE_BUILD_TYPE=Release
+;; CMAKE_BUILD_TYPE=RelWithDebInfo
+;; CMAKE_BUILD_TYPE=MinSizeRel
+cmake.exe -S . -B build -DCMAKE_VERBOSE_MAKEFILE=1 -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE%
+
+cmake.exe --build build
+
+if "%CMAKE_BUILD_TYPE%" == "Debug" (
+    bin\gallop0_test.exe
+)
+:EOF
