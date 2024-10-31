@@ -1,0 +1,5 @@
+build/
+
+cmake.cmd
+cmake.sh
+**/bin/gallop0*
