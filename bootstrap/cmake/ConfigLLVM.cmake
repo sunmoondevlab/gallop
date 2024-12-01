@@ -1,0 +1,6 @@
+#Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/llvm)
+find_package(LlvmAs REQUIRED)
+find_package(LlvmAr REQUIRED)
+find_package(LlvmRanlib REQUIRED)
+find_package(LLVM REQUIRED)

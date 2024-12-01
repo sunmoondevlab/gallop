@@ -1,0 +1,10 @@
+#Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+if(WIN32)
+    set(EXEC_TERMINAL_CMD "cmd")
+    set(EXEC_TERMINAL_CMD_OPT "/c")
+    set(EXEC_CMD_EXT ".exe")
+else()
+    set(EXEC_TERMINAL_CMD "bash")
+    set(EXEC_TERMINAL_CMD_OPT "-c")
+    set(EXEC_CMD_EXT "")
+endif()
