@@ -1,6 +1,6 @@
 #Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
 
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.31)
 
 # project setting
 project(gallop0
@@ -23,8 +23,9 @@ include("ConfigGoogleTest")
 
 # build script
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_EXTENSIONS ON)
 
 if("Debug" STREQUAL "${CMAKE_BUILD_TYPE}" OR "RelWithDebInfo" STREQUAL "${CMAKE_BUILD_TYPE}")
     add_compile_definitions("-DFOR_DEBUG")
@@ -38,8 +39,6 @@ include(AddLLVM)
 include(AddMLIR)
 include(HandleLLVMOptions)
 
-
-add_subdirectory(${CMAKE_SOURCE_DIR}/include)
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
     ${LLVM_INCLUDEDIR}

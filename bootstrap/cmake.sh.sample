@@ -33,5 +33,12 @@ CMAKE_BUILD_TYPE=Debug
 cmake -S . -B build -DCMAKE_VERBOSE_MAKEFILE=1 -DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}"
 cmake --build build
 if [[ "${CMAKE_BUILD_TYPE}" -eq "Debug" ]] ; then
-    bin/gallop0_test
+    # bin/gallop0_test 
+    # bin/gallop0_test --gtest_list_tests
+    TEST_FILTER="*"
+    # TEST_FILTER="DetectorTest.*"
+    # TEST_FILTER="${TEST_FILTER}:Utf*EncoderTest.*"
+    # TEST_FILTER="${TEST_FILTER}:LexicalAnalyzerTest.*"
+    # TEST_FILTER="${TEST_FILTER}:ByteArrayInputStreamTest.*"
+    bin/gallop0_test --gtest_filter="${TEST_FILTER}"
 fi

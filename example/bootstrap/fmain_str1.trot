@@ -1,0 +1,23 @@
+// Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+
+
+fmain {
+    /# fmain block
+    // comment block
+"\o001767777"
+    " \\
+ this is \
+ string \\ \"\"\'
+ \a\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\n\s\t\u\v\w\x\y\z
+ aa\b
+\o001013
+\x00192343
+\u2831 \0  a"
+ "\o00";
+"\x00";
+"\u000";
+"\o36053724234\o71100201";
+"\xf0afa89c\xe39683";
+"\u61\u7361e1c";
+"\e[38;2;0;0;255maaaa\e[0m";
+}

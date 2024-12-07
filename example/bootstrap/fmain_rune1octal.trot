@@ -1,0 +1,35 @@
+// Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+
+
+fmain {
+    // null char
+    '\o0';
+    '\o00';
+    '\o000';
+    // 1 byte char
+    '\o1';
+    '\o01';
+    '\o001';
+    '\o037';
+    '\o07';
+    '\o37';
+    // 2 byte
+    '\o40';
+    '\o040';
+    '\o040';
+    '\o017';
+    '\o176';
+    // 3 byte
+    '\o141241';
+    '\o70713203';
+    '\o71100201';
+    '\o70713203';
+    '\o71100201';
+    // 4 byte
+    '\o36053724234';
+    //<
+    // invalid
+    // '\o3605372423';
+    //>
+}
+
