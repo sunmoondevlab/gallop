@@ -1,0 +1,15 @@
+// Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+
+
+fmain {
+    /# fmain block
+    // comment block
+    ` \\ra\ \\
+     \
+ this is \
+ string \\ \`\"\'
+\o001013
+\x192343
+\u2831`;
+}
+

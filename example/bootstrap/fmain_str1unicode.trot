@@ -1,0 +1,30 @@
+// Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+
+
+fmain {
+    "\u0";
+    "\u00";
+    "\u001";
+    "\u1";
+    "\u01";
+    "\uf";
+    "\u0f";
+    "\u0F";
+    "\u07E";
+    "\u07e";
+    "\u7e";
+    "\u080";
+    "\u80";
+    "\u7ff";
+    "\u800";
+    "\u0800";
+    "\u8000";
+    "\u08000";
+    "\u10000";
+    "\u010000";
+    "\u100000";
+    "\u10ffff";
+    "\u10FFFF";
+    "\u010FFFF";
+    "\u61\u7361e1c";
+}

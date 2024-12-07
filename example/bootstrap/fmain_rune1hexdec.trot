@@ -1,0 +1,25 @@
+// Copyright © 2024- Sunmoon development laboratory. All Rights Reserved. 
+
+
+fmain {
+    '\x0';
+    '\x00';
+    '\x1';
+    '\x01';
+    '\xf';
+    '\x0f';
+    '\x0F';
+    '\x07';
+    '\x07';
+    '\x7e';
+    '\x7f';
+    '\xc2a1';
+    '\xE39683';
+    '\xf0afa89c';
+    //<
+    // invalid
+    // '\xf0afa89ca';
+    //>
+
+}
+

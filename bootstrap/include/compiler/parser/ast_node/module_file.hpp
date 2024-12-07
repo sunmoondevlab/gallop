@@ -1,0 +1,64 @@
+// Copyright © 2024- Sunmoon development laboratory. All Rights Reserved.
+#ifndef _COMPILER_PARSER_AST_NODE_MODULE_FILE_
+#define _COMPILER_PARSER_AST_NODE_MODULE_FILE_
+#include "compiler/parser/ast_node/module.hpp"
+#include <string>
+#include <vector>
+
+namespace gallop {
+namespace Compiler {
+namespace Parser {
+
+class AstNodeModuleFile : public AstNodeModule {
+public:
+  AstNodeModuleFile(const std::string filename);
+  ~AstNodeModuleFile() {};
+  AstNodeModuleFile(const AstNodeModuleFile &rhs);
+  AstNodeModuleFile &operator=(const AstNodeModuleFile &rhs);
+  Location getLocation() const override;
+  std::string getAstNodeTypeString() const override;
+  AstNodeTypeEnum getAstNodeType() const override;
+  void printNode(const size_t depth, const bool isVerbose) override;
+  llvm::Value *generateLlvmIr(LLVM::IrGenContext *const context) override;
+  bool hasParent() const override;
+  bool hasPrev() const override;
+  bool hasNext() const override;
+  bool hasChild() const override;
+  AstNode *getModule() override;
+  AstNode *getRoot() override;
+  AstNode *getParent() override;
+  AstNode *getPrev() override;
+  AstNode *getNext() override;
+  AstNode *getChild() override;
+  AstNode *setParent(AstNode *const node) override;
+  AstNode *setPrev(AstNode *const node) override;
+  AstNode *setNext(AstNode *const node) override;
+  AstNode *setChild(AstNode *const node) override;
+  AstNode *getLastModuleNode() override;
+  bool isDefinedPackageName() const override;
+  void replacePackageName(const std::string pkgName) override;
+  bool isDefinedModuleName() const override;
+  void replaceModuleName(const std::string modName) override;
+  std::string getFullModuleName() const override;
+  llvm::Module *getLlvmModule() override;
+
+private:
+  std::string filename;
+  AstNodeTypeEnum nodeType;
+  AstNode *parent;
+  AstNode *prev;
+  AstNode *next;
+  AstNode *child;
+  const std::string defaultPackageName;
+  std::string packageName;
+  const std::string defaultModuleName;
+  std::string moduleName;
+  llvm::Module *llvmModule;
+
+  bool settableChild(AstNode *const node) const override;
+};
+
+} // namespace Parser
+} // namespace Compiler
+} // namespace gallop
+#endif

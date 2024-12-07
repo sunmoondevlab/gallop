@@ -41,6 +41,11 @@ cmake.exe -S . -B build -DCMAKE_VERBOSE_MAKEFILE=1 -DCMAKE_BUILD_TYPE=%CMAKE_BUI
 cmake.exe --build build
 
 if "%CMAKE_BUILD_TYPE%" == "Debug" (
-    bin\gallop0_test.exe
+     TEST_FILTER="*"
+    ;; TEST_FILTER="DetectorTest.*"
+    ;; TEST_FILTER="%TEST_FILTER%:Utf*EncoderTest.*"
+    ;; TEST_FILTER="%TEST_FILTER%:LexicalAnalyzerTest.*"
+    ;; TEST_FILTER="%TEST_FILTER%:ByteArrayInputStreamTest.*"
+    bin\gallop0_test.exe --gtest_filter="%TEST_FILTER%"
 )
 :EOF
