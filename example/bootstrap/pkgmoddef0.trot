@@ -1,0 +1,17 @@
+  
+/#<
+comment out （コメントアウト　ドキュメント用）\
+    aa
+   aa
+/#>
+
+//<
+comment out （コメントアウト）
+  comm\
+   ent
+//>
+
+pkgdef pkg1.pkg2;
+
+
+moddef module1;

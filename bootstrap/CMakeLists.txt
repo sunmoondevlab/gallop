@@ -36,8 +36,6 @@ include(AddLLVM)
 include(AddMLIR)
 include(HandleLLVMOptions)
 
-
-add_subdirectory(${CMAKE_SOURCE_DIR}/include)
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
     ${LLVM_INCLUDEDIR}
