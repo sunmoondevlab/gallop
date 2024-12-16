@@ -1,7 +1,7 @@
 #include "file/file.hpp"
 #include "charset/detector/detector.hpp"
 
-namespace gallop {
+using namespace gallop;
 
 bool File::isExists(const std::string filename) {
   return (std::filesystem::exists(filename));
@@ -54,5 +54,3 @@ std::vector<char> File::readAllBinary(const std::string filename) {
   fclose(file);
   return fbuff;
 }
-
-} // namespace gallop

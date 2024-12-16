@@ -4,22 +4,21 @@
 #include "cli/interpreter.hpp"
 #include "cli/translate_args.hpp"
 
-namespace gallop {
-namespace Main {
+using namespace gallop::Main;
+using namespace gallop::Cli;
+
 int main(int argc, char **argv) {
-  Cli::Args args = Cli::TranslateArgs::translateArgs(argc, argv);
+  Args args = translateArgs(argc, argv);
   bool stdinTtyFlag = isatty(fileno(stdin)) > 0;
   if (stdinTtyFlag && args.getArgs().size() == 0) {
-    Cli::Interpreter i;
+    Interpreter i;
     i.execute(args);
   } else if (stdinTtyFlag) {
-    Cli::CompilerFromFile cf;
+    CompilerFromFile cf;
     cf.execute(args);
   } else {
-    Cli::CompilerFromStdin cs;
+    CompilerFromStdin cs;
     cs.execute(args);
   }
   return 0;
 };
-} // namespace Main
-} // namespace gallop

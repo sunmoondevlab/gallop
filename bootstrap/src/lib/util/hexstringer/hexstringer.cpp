@@ -1,8 +1,7 @@
 #include "util/hexstringer/hexstringer.hpp"
 
-namespace gallop {
-namespace Util {
-namespace HexStringer {
+using namespace gallop::Util::HexStringer;
+
 // std::string
 std::string dumpChar(const int8_t &chr) { return dumpChar((u_int8_t)chr); };
 std::string dumpChar(const u_int8_t &chr) {
@@ -125,6 +124,3 @@ std::string codeGenVector(const std::vector<char> &str) {
   std::string hexString(hexCharArr.begin(), hexCharArr.end());
   return hexString;
 };
-} // namespace HexStringer
-} // namespace Util
-} // namespace gallop
