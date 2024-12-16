@@ -9,6 +9,8 @@ const std::map<AstNodeTypeEnum, std::string> AstNodeType::_map = {
     {AstNodeTypeEnum::rootFile, "Root(File)"},
     {AstNodeTypeEnum::rootStdin, "Root(Stdin)"},
     {AstNodeTypeEnum::rootInterpreter, "Root(Interpreter)"},
+    // module
+    {AstNodeTypeEnum::moduleFile, "File"},
     // block fmain
     {AstNodeTypeEnum::blockFmain, "fmain"},
 

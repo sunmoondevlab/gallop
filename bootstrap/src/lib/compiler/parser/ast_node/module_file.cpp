@@ -8,7 +8,8 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeModuleFile::AstNodeModuleFile(const std::string filename_)
-    : filename(filename_), next(nullptr), child(nullptr), packageName("main"),
+    : filename(filename_), astNodeType(AstNodeTypeEnum::moduleFile),
+      next(nullptr), child(nullptr), packageName("main"),
       moduleName(File::getBasename(filename_, true)) {};
 AstNodeModuleFile::AstNodeModuleFile(const AstNodeModuleFile &rhs)
     : filename(rhs.filename), astNodeType(rhs.astNodeType), next(rhs.next),
@@ -33,8 +34,22 @@ AstNodeTypeEnum AstNodeModuleFile::getAstNodeType() { return astNodeType; };
 void AstNodeModuleFile::printAstNode(const size_t depth, const bool isVerbose) {
   indentDepth(depth);
   llvm::outs() << getAstNodeTypeString() << "{\n";
+
+  indentDepth(depth + 1);
+  llvm::outs() << "filename: " << filename << ",\n";
+  indentDepth(depth + 1);
+  llvm::outs() << "package name: " << packageName << ",\n";
+  indentDepth(depth + 1);
+  llvm::outs() << "module name: " << moduleName << ",\n";
+
   indentDepth(depth);
-  llvm::outs() << "}\n";
+  llvm::outs() << "}";
+  if (next != nullptr) {
+    llvm::outs() << ",\n";
+    next->printAstNode(depth, isVerbose);
+  } else {
+    llvm::outs() << "\n";
+  }
 };
 
 bool AstNodeModuleFile::hasParent() { return false; };

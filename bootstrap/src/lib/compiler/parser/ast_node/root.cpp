@@ -24,6 +24,9 @@ AstNodeTypeEnum AstNodeRoot::getAstNodeType() { return astNodeType; };
 void AstNodeRoot::printAstNode(const size_t depth, const bool isVerbose) {
   indentDepth(depth);
   llvm::outs() << "ast::" << getAstNodeTypeString() << "{\n";
+  if (child != nullptr) {
+    child->printAstNode(depth + 1, isVerbose);
+  }
   indentDepth(depth);
   llvm::outs() << "}\n";
 };

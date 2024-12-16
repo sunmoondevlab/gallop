@@ -1,0 +1,6 @@
+#pkgdef pkgdef.pkg;
+#moddef module1;
+
+fmain {
+
+}

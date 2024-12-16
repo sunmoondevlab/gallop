@@ -34,5 +34,8 @@ void CompilerFromFile::execute(Args args) {
       llvm::outs() << "-- " << files[fileIdx] << " to tokens --\n";
       tokens->printTokens(args.isVerboseEmit());
     }
+    AstNodeModuleFile *fileNode = new AstNodeModuleFile(files[fileIdx]);
+    ast->getRoot()->putChildNode(fileNode);
+    ast->printAst(args.isVerboseEmit());
   }
 };
