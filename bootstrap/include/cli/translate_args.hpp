@@ -4,6 +4,7 @@
 #include <vector>
 namespace gallop {
 namespace Cli {
+
 class Args {
 public:
   Args();

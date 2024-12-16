@@ -1,6 +1,7 @@
 #include "util/hexstringer/hexstringer.hpp"
 
-using namespace gallop::Util::HexStringer;
+using namespace gallop::Util;
+namespace gallop::Util::HexStringer {
 
 // std::string
 std::string dumpChar(const int8_t &chr) { return dumpChar((u_int8_t)chr); };
@@ -16,6 +17,7 @@ std::string dumpChar(const u_int8_t &chr, const bool fixZeroFlag) {
   std::string hexString(hexCharArr.begin(), hexCharArr.end());
   return hexString;
 };
+
 std::string dumpChar(const int16_t &chr) { return dumpChar((uint16_t)chr); };
 std::string dumpChar(const uint16_t &chr) {
   if (chr == 0) {
@@ -124,3 +126,4 @@ std::string codeGenVector(const std::vector<char> &str) {
   std::string hexString(hexCharArr.begin(), hexCharArr.end());
   return hexString;
 };
+} // namespace gallop::Util::HexStringer

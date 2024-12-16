@@ -4,11 +4,12 @@
 #include "cli/interpreter.hpp"
 #include "cli/translate_args.hpp"
 
-using namespace gallop::Main;
 using namespace gallop::Cli;
 
+namespace gallop::Main {
+
 int main(int argc, char **argv) {
-  Args args = translateArgs(argc, argv);
+  Args args = TranslateArgs::translateArgs(argc, argv);
   bool stdinTtyFlag = isatty(fileno(stdin)) > 0;
   if (stdinTtyFlag && args.getArgs().size() == 0) {
     Interpreter i;
@@ -22,3 +23,5 @@ int main(int argc, char **argv) {
   }
   return 0;
 };
+
+} // namespace gallop::Main

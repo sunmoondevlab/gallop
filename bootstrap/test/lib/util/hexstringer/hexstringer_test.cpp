@@ -3,9 +3,8 @@
 #include <gtest/gtest.h>
 #include <llvm/Support/raw_ostream.h>
 
-namespace gallop {
-namespace Util {
-namespace HexStringer {
+namespace gallop::Util::HexStringer {
+
 class HexStringerTest : public ::testing::Test {};
 
 TEST_F(HexStringerTest, DumpCharCharCheck) {
@@ -262,7 +261,4 @@ TEST_F(HexStringerTest, CodeGenVectorCheck) {
       "static_cast<char>(0xfe), static_cast<char>(0x00),}");
 };
 
-} // namespace HexStringer
-} // namespace Util
-} // namespace gallop
 #endif

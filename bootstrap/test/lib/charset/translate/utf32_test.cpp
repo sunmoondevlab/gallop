@@ -3,9 +3,8 @@
 #include <gtest/gtest.h>
 #include <llvm/Support/raw_ostream.h>
 
-namespace gallop {
-namespace CharSet {
-namespace Translate {
+using namespace gallop::CharSet::Translate;
+
 class Utf32EncoderTest : public ::testing::Test {};
 TEST(Utf32EncoderTest, EncodeTest) {
   std::string str;
@@ -1101,7 +1100,4 @@ TEST(Utf32EncoderTest, EncodeTest) {
   ASSERT_EQ(utf32Enc, expectBuf);
 };
 
-} // namespace Translate
-} // namespace CharSet
-} // namespace gallop
 #endif

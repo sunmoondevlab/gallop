@@ -3,8 +3,7 @@
 #include <gtest/gtest.h>
 #include <llvm/Support/raw_ostream.h>
 
-namespace gallop {
-namespace CharSet {
+using namespace gallop::CharSet;
 
 class DetectorTest : public ::testing::Test {};
 TEST(DetectorTest, DetectUTFWithBOM) {
@@ -290,7 +289,5 @@ TEST(DetectorTest, DetectUtf8Char) {
   d = Detector(buf);
   EXPECT_EQ(d.getEncodingCharset(), EncodingCharsetEnum::UTF8);
 };
-}; // namespace CharSet
 
-} // namespace gallop
 #endif

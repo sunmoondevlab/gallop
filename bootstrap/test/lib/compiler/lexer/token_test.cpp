@@ -2,9 +2,8 @@
 #include "compiler/lexer/token.hpp"
 #include <gtest/gtest.h>
 
-namespace gallop {
-namespace Compiler {
-namespace Lexer {
+using namespace gallop::Compiler;
+using namespace gallop::Compiler::Lexer;
 
 class TokenTest : public ::testing::Test {};
 TEST_F(TokenTest, TokenTypeStringCheck) {
@@ -118,7 +117,4 @@ TEST_F(TokensTest, TokensCheck) {
   EXPECT_EQ(tokens.getTokenCnt(), 0ul);
 };
 
-} // namespace Lexer
-} // namespace Compiler
-} // namespace gallop
 #endif

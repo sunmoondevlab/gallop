@@ -1,9 +1,8 @@
 #include "compiler/parser/ast_node_type.hpp"
 #include <gtest/gtest.h>
 
-namespace gallop {
-namespace Compiler {
-namespace Parser {
+using namespace gallop::Compiler::Parser;
+
 class AstNodeTypeTest : public ::testing::Test {};
 TEST_F(AstNodeTypeTest, AstNodeTypeStringCheck) {
   EXPECT_EQ(AstNodeType::getString(AstNodeTypeEnum::unknown), "Unknown");
@@ -13,7 +12,3 @@ TEST_F(AstNodeTypeTest, AstNodeTypeStringCheck) {
   EXPECT_EQ(AstNodeType::getString(AstNodeTypeEnum::rootInterpreter),
             "Root(Interpreter)");
 };
-
-} // namespace Parser
-} // namespace Compiler
-} // namespace gallop

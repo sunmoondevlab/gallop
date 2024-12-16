@@ -2,9 +2,8 @@
 #include "compiler/lexer/lexical_analyzer.hpp"
 #include <gtest/gtest.h>
 
-namespace gallop {
-namespace Compiler {
-namespace Lexer {
+using namespace gallop::Compiler;
+using namespace gallop::Compiler::Lexer;
 
 class LexicalAnalyzerTest : public ::testing::Test {};
 
@@ -3615,7 +3614,4 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1\n1");
 };
 
-} // namespace Lexer
-} // namespace Compiler
-} // namespace gallop
 #endif

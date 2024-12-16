@@ -2,8 +2,8 @@
 #include "compiler/common/location.hpp"
 #include <gtest/gtest.h>
 
-namespace gallop {
-namespace Compiler {
+using namespace gallop::Compiler;
+
 class LocationTest : public ::testing::Test {};
 
 TEST_F(LocationTest, ConstructorCheck) {
@@ -25,6 +25,5 @@ TEST_F(LocationTest, ConstructorCheck) {
   p = Location("", 0, 0ul);
   EXPECT_EQ(p.getString(), "");
 };
-} // namespace Compiler
-} // namespace gallop
+
 #endif

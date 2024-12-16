@@ -3,8 +3,8 @@
 #include <gtest/gtest.h>
 #include <llvm/Support/raw_ostream.h>
 
-namespace gallop {
-namespace CharSet {
+using namespace gallop::CharSet;
+
 class EncodingCharsetTest : public ::testing::Test {};
 TEST_F(EncodingCharsetTest, GetStringCheck) {
   EXPECT_EQ(EncodingCharset::getString(EncodingCharsetEnum::Unknown),
@@ -13,7 +13,4 @@ TEST_F(EncodingCharsetTest, GetStringCheck) {
             "UTF-32 LE");
 };
 
-} // namespace CharSet
-
-} // namespace gallop
 #endif

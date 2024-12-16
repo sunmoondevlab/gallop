@@ -2,9 +2,7 @@
 #include "compiler/lexer/token_type.hpp"
 #include <gtest/gtest.h>
 
-namespace gallop {
-namespace Compiler {
-namespace Lexer {
+using namespace gallop::Compiler::Lexer;
 
 class TokenTypeTest : public ::testing::Test {};
 TEST_F(TokenTypeTest, TokenStringCheck) {
@@ -36,7 +34,4 @@ TEST_F(TokenTypeTest, TokenStringCheck) {
       "decimal number literal(decimal part)");
 };
 
-} // namespace Lexer
-} // namespace Compiler
-} // namespace gallop
 #endif
