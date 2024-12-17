@@ -33,6 +33,10 @@ public:
   bool hasPrev();
   AstNode *prevNode();
   AstNode *putPrevNode(AstNode *const node);
+  bool isDefinedPkgName();
+  void replacePackageName(const std::string pkgName);
+  bool isDefinedModName();
+  void replaceModuleName(const std::string modName);
 
 private:
   std::string filename;
@@ -40,7 +44,9 @@ private:
   AstNode *next;
   AstNode *child;
   AstNode *prev;
+  const std::string defaultPkgName;
   std::string packageName;
+  const std::string defaultModName;
   std::string moduleName;
 };
 

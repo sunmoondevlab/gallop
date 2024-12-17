@@ -9,7 +9,8 @@ using namespace gallop::Compiler::Parser;
 
 AstNodeModuleFile::AstNodeModuleFile(const std::string filename_)
     : filename(filename_), astNodeType(AstNodeTypeEnum::moduleFile),
-      next(nullptr), child(nullptr), packageName("main"),
+      next(nullptr), child(nullptr), defaultPkgName("main"),
+      packageName("main"), defaultModName("main"),
       moduleName(File::getBasename(filename_, true)) {};
 AstNodeModuleFile::AstNodeModuleFile(const AstNodeModuleFile &rhs)
     : filename(rhs.filename), astNodeType(rhs.astNodeType), next(rhs.next),
@@ -91,4 +92,21 @@ AstNode *AstNodeModuleFile::prevNode() { return prev; };
 AstNode *AstNodeModuleFile::putPrevNode(AstNode *const node) {
   prev = node;
   return this;
+};
+
+bool AstNodeModuleFile::isDefinedPkgName() {
+  return defaultPkgName != packageName;
+};
+void AstNodeModuleFile::replacePackageName(const std::string pkgName) {
+  if (pkgName != "") {
+    packageName = pkgName;
+  }
+};
+bool AstNodeModuleFile::isDefinedModName() {
+  return defaultModName != moduleName;
+};
+void AstNodeModuleFile::replaceModuleName(const std::string modName) {
+  if (modName != "") {
+    moduleName = modName;
+  }
 };

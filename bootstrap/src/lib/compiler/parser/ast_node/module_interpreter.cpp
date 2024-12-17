@@ -12,15 +12,13 @@ AstNodeModuleInterpreter::AstNodeModuleInterpreter()
       child(nullptr), moduleName("moduleForInterpreter") {};
 AstNodeModuleInterpreter::AstNodeModuleInterpreter(
     const AstNodeModuleInterpreter &rhs)
-    : astNodeType(rhs.astNodeType), next(rhs.next), child(rhs.child),
-      moduleName(rhs.moduleName) {};
+    : astNodeType(rhs.astNodeType), next(rhs.next), child(rhs.child) {};
 
 AstNodeModuleInterpreter &
 AstNodeModuleInterpreter::operator=(const AstNodeModuleInterpreter &rhs) {
   astNodeType = rhs.astNodeType;
   next = rhs.next;
   child = rhs.child;
-  moduleName = rhs.moduleName;
   return *this;
 };
 Location AstNodeModuleInterpreter::getLocation() { return Location(0, 0); };

@@ -39,7 +39,7 @@ private:
   AstNode *next;
   AstNode *child;
   AstNode *prev;
-  std::string moduleName;
+  const std::string moduleName;
 };
 
 } // namespace Parser

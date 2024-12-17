@@ -9,7 +9,7 @@ using namespace gallop::Compiler::Parser;
 
 AstNodeModuleStdin::AstNodeModuleStdin()
     : astNodeType(AstNodeTypeEnum::moduleStdin), next(nullptr), child(nullptr),
-      moduleName("moduleFromStdin") {};
+      defaultModName("moduleFromStdin"), moduleName("moduleFromStdin") {};
 AstNodeModuleStdin::AstNodeModuleStdin(const AstNodeModuleStdin &rhs)
     : astNodeType(rhs.astNodeType), next(rhs.next), child(rhs.child),
       moduleName(rhs.moduleName) {};
@@ -87,4 +87,13 @@ AstNode *AstNodeModuleStdin::prevNode() { return prev; };
 AstNode *AstNodeModuleStdin::putPrevNode(AstNode *const node) {
   prev = node;
   return this;
+};
+
+bool AstNodeModuleStdin::isDefinedModName() {
+  return defaultModName != moduleName;
+};
+void AstNodeModuleStdin::replaceModuleName(const std::string modName) {
+  if (modName != "") {
+    moduleName = modName;
+  }
 };

@@ -33,12 +33,15 @@ public:
   bool hasPrev();
   AstNode *prevNode();
   AstNode *putPrevNode(AstNode *const node);
+  bool isDefinedModName();
+  void replaceModuleName(const std::string modName);
 
 private:
   AstNodeTypeEnum astNodeType;
   AstNode *next;
   AstNode *child;
   AstNode *prev;
+  const std::string defaultModName;
   std::string moduleName;
 };
 
