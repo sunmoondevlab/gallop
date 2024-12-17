@@ -20,6 +20,7 @@ public:
   bool hasParent() override;
   bool hasNext() override;
   bool hasChild() override;
+  AstNode *moduleNode() override;
   AstNode *rootNode() override;
   AstNode *parentNode() override;
   AstNode *nextNode() override;
@@ -31,6 +32,7 @@ public:
 private:
   AstNodeTypeEnum astNodeType;
   AstNode *child;
+  size_t moduleIdx;
 };
 
 } // namespace Parser

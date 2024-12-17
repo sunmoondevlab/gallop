@@ -12,14 +12,14 @@ enum class TokenTypeEnum : uint32_t {
   // unknown
   unknown = 0,
   // comment out
-  commentOutOneline = 0x1 << 24,
+  commentOutOneline = (1 << 24) + 1,
   commentOutOnelineDoc,
   commentOutBlock,
   commentOutBlockDoc,
   // identifer types
-  identifier = 0x2 << 24,
+  identifier = (2 << 24) + 1,
   // literal
-  literalDecimalNumberIntegralPart = 0x3 << 24,
+  literalDecimalNumberIntegralPart = (3 << 24) + 1,
   literalDecimalNumberDecimalPart,
   literalDecimalNumberExponentOperator,
   literalDecimalNumberExponentPart,
@@ -38,7 +38,7 @@ enum class TokenTypeEnum : uint32_t {
   literalRuneUnicodePointEscapeSequence,
   // symbolCharacter
   //  : arithmetic ope
-  symbolCharacterPlus = 0x4 << 24,
+  symbolCharacterPlus = (4 << 24) + 1,
   symbolCharacterPositiveDecimalExponent,
   symbolCharacterPlusPercent,
   symbolCharacterPlusPipeline,

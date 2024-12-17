@@ -22,6 +22,7 @@ public:
   virtual bool hasNext() = 0;
   virtual bool hasChild() = 0;
   virtual AstNode *rootNode() = 0;
+  virtual AstNode *moduleNode() = 0;
   virtual AstNode *parentNode() = 0;
   virtual AstNode *nextNode() = 0;
   virtual AstNode *childNode() = 0;

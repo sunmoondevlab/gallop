@@ -63,6 +63,7 @@ AstNode *AstNodeModuleFile::rootNode() {
   }
   return node;
 };
+AstNode *AstNodeModuleFile::moduleNode() { return this; };
 AstNode *AstNodeModuleFile::parentNode() { return nullptr; };
 AstNode *AstNodeModuleFile::nextNode() { return next; };
 AstNode *AstNodeModuleFile::childNode() { return child; };

@@ -126,7 +126,7 @@ void Tokens::printTokens(const bool isVerbose) {
   for (size_t i = 0; i < tokenCnt; i++) {
     TokenTypeEnum tokenType = tokenPtrs[i]->getTokenType();
     llvm::outs() << "  " << tokenPtrs[i]->getTokenTypeString();
-    if ((int(tokenType) >> 24) != 0x4) {
+    if ((uint32_t(tokenType) >> 24) != 4) {
       llvm::outs() << ": " << tokenPtrs[i]->getToken() << " ";
     }
     if (isVerbose) {

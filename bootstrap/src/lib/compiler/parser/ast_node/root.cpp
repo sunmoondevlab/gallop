@@ -6,13 +6,14 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeRoot::AstNodeRoot(const AstNodeTypeEnum rootNodeType_)
-    : astNodeType(rootNodeType_), child(nullptr) {};
+    : astNodeType(rootNodeType_), child(nullptr), moduleIdx(0) {};
 AstNodeRoot::AstNodeRoot(const AstNodeRoot &rhs)
-    : astNodeType(rhs.astNodeType), child(rhs.child) {};
-
+    : astNodeType(rhs.astNodeType), child(rhs.child),
+      moduleIdx(rhs.moduleIdx) {};
 AstNodeRoot &AstNodeRoot::operator=(const AstNodeRoot &rhs) {
   astNodeType = rhs.astNodeType;
   child = rhs.child;
+  moduleIdx = rhs.moduleIdx;
   return *this;
 };
 Location AstNodeRoot::getLocation() { return Location(0, 0); };
@@ -36,6 +37,20 @@ bool AstNodeRoot::hasNext() { return false; };
 bool AstNodeRoot::hasChild() { return child != nullptr; };
 
 AstNode *AstNodeRoot::rootNode() { return this; };
+AstNode *AstNodeRoot::moduleNode() {
+  if (astNodeType == AstNodeTypeEnum::rootFile) {
+    AstNode *moduleNode = child;
+    if (moduleNode == nullptr) {
+      return moduleNode;
+    }
+    for (size_t i = 0; i < moduleIdx && moduleNode->hasNext(); i++) {
+      moduleNode = moduleNode->nextNode();
+    }
+    return moduleNode;
+  } else {
+    return child;
+  }
+};
 AstNode *AstNodeRoot::parentNode() { return nullptr; };
 AstNode *AstNodeRoot::nextNode() { return nullptr; };
 AstNode *AstNodeRoot::childNode() { return child; };

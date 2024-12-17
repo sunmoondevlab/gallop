@@ -60,6 +60,7 @@ AstNode *AstNodeModuleInterpreter::rootNode() {
   }
   return node;
 };
+AstNode *AstNodeModuleInterpreter::moduleNode() { return this; };
 AstNode *AstNodeModuleInterpreter::parentNode() { return nullptr; };
 AstNode *AstNodeModuleInterpreter::nextNode() { return next; };
 AstNode *AstNodeModuleInterpreter::childNode() { return child; };

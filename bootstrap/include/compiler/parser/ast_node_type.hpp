@@ -12,15 +12,15 @@ enum class AstNodeTypeEnum : uint32_t {
   // unknown
   unknown = 0,
   // root node
-  rootFile = 0x01,
+  rootFile = (1 << 24) + 1,
   rootStdin,
   rootInterpreter,
   // compile module node
-  moduleFile = 0x02 << 24,
+  moduleFile = (2 << 24) + 1,
   moduleStdin,
   moduleInterpreter,
   // fmain
-  blockFmain = 0x03 << 24,
+  blockFmain = (3 << 24) + 1,
   // comment out
   commentOutOneline = 0x22 << 24,
   commentOutOnelineDoc,

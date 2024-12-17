@@ -47,7 +47,17 @@ AstNode *AstNodeBlockFmain::rootNode() {
   }
   return node;
 };
-
+AstNode *AstNodeBlockFmain::moduleNode() {
+  AstNode *node = this;
+  while (node->hasParent()) {
+    node = node->parentNode();
+    AstNodeTypeEnum nodeType = node->getAstNodeType();
+    if ((uint32_t(nodeType) >> 24) == 2) {
+      break;
+    }
+  }
+  return node;
+};
 AstNode *AstNodeBlockFmain::parentNode() { return parent; };
 AstNode *AstNodeBlockFmain::nextNode() { return next; };
 AstNode *AstNodeBlockFmain::childNode() { return child; };

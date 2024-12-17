@@ -21,6 +21,7 @@ public:
   bool hasParent() override;
   bool hasNext() override;
   bool hasChild() override;
+  AstNode *moduleNode() override;
   AstNode *rootNode() override;
   AstNode *parentNode() override;
   AstNode *nextNode() override;
