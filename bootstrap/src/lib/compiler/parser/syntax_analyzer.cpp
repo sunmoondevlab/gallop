@@ -6,16 +6,16 @@ using namespace gallop::Compiler::Lexer;
 using namespace gallop::Compiler::Parser;
 
 SyntaxAnalyzer::SyntaxAnalyzer(LexicalAnalyzer *const lexicalAnalyzer_,
-                               Ast *const ast_)
+                               AstNode *const astNode_)
     : lexicalAnalyzer((LexicalAnalyzer *)lexicalAnalyzer_), parsedTokenPos(0),
-      ast(ast_) {};
+      astNode(astNode_) {};
 SyntaxAnalyzer::SyntaxAnalyzer(const SyntaxAnalyzer &rhs)
     : lexicalAnalyzer(rhs.lexicalAnalyzer), parsedTokenPos(rhs.parsedTokenPos),
-      ast(rhs.ast) {};
+      astNode(rhs.astNode) {};
 SyntaxAnalyzer &SyntaxAnalyzer::operator=(const SyntaxAnalyzer &rhs) {
   lexicalAnalyzer = rhs.lexicalAnalyzer;
   parsedTokenPos = rhs.parsedTokenPos;
-  ast = rhs.ast;
+  astNode = rhs.astNode;
   return *this;
 };
 LexicalAnalyzer *SyntaxAnalyzer::getLexicalAnalyzer() {

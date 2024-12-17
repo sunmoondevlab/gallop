@@ -3,6 +3,7 @@
 #include "cli/translate_args.hpp"
 #include "compiler/lexer/lexical_analyzer.hpp"
 #include "compiler/parser/ast.hpp"
+#include "compiler/parser/ast_node/module_stdin.hpp"
 
 using namespace gallop::CharSet;
 using namespace gallop::Cli;
@@ -11,6 +12,9 @@ using namespace gallop::Compiler::Parser;
 
 void CompilerFromStdin::execute(Args args) {
   Ast *ast = new Ast(AstNodeTypeEnum::rootStdin);
+  AstNodeModuleStdin *moduleNode = new AstNodeModuleStdin();
+  ast->getRoot()->putChildNode(moduleNode);
+
   ast->printAst(args.isVerboseEmit());
   std::vector<char> buf;
   while (std::cin) {
@@ -28,4 +32,5 @@ void CompilerFromStdin::execute(Args args) {
     std::cerr << "Unsupport charcter set\n";
     return;
   }
+  ast->printAst(args.isVerboseEmit());
 };

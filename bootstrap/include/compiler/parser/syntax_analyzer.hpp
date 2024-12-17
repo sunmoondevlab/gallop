@@ -11,7 +11,7 @@ namespace Parser {
 class SyntaxAnalyzer {
 public:
   SyntaxAnalyzer(Lexer::LexicalAnalyzer *const lexicalAnalyzer_,
-                 Ast *const ast_);
+                 AstNode *const astNode_);
   SyntaxAnalyzer(const SyntaxAnalyzer &rhs);
   SyntaxAnalyzer &operator=(const SyntaxAnalyzer &rhs);
   ~SyntaxAnalyzer() {};
@@ -21,7 +21,7 @@ public:
 private:
   Lexer::LexicalAnalyzer *lexicalAnalyzer;
   size_t parsedTokenPos;
-  Ast *ast;
+  AstNode *astNode;
 };
 
 } // namespace Parser

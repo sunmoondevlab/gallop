@@ -4,6 +4,7 @@
 #include "compiler/lexer/lexical_analyzer.hpp"
 #include "compiler/parser/ast.hpp"
 #include "compiler/parser/ast_node/module_file.hpp"
+#include "compiler/parser/syntax_analyzer.hpp"
 #include "file/file.hpp"
 #include <llvm/Support/raw_ostream.h>
 
@@ -34,8 +35,9 @@ void CompilerFromFile::execute(Args args) {
       llvm::outs() << "-- " << files[fileIdx] << " to tokens --\n";
       tokens->printTokens(args.isVerboseEmit());
     }
-    AstNodeModuleFile *fileNode = new AstNodeModuleFile(files[fileIdx]);
-    ast->getRoot()->putChildNode(fileNode);
+    AstNodeModuleFile *moduleNode = new AstNodeModuleFile(files[fileIdx]);
+    SyntaxAnalyzer parser(&lexer, moduleNode);
+    ast->getRoot()->putChildNode(moduleNode);
     ast->printAst(args.isVerboseEmit());
   }
 };
