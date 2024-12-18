@@ -145,7 +145,6 @@ void LexicalAnalyzer::tokenize() {
       pos += tokenLen;
       nextToken = new Token(location);
       tokenLen = scanningBlockComment(pos);
-      location = computeLocation(pos, tokenLen, location);
       if (tokenLen > 0) {
         pos += tokenLen;
         if (pos >= bufferLen) {
@@ -1213,9 +1212,12 @@ size_t LexicalAnalyzer::scanningBlockComment(const size_t pos_) {
           }
           pos++;
           tokenLen++;
+          nextTokenLen++;
           size_t nlTokenLen = toNextToken(pos);
           pos += nlTokenLen;
           tokenLen += nlTokenLen;
+          nextTokenLen += nlTokenLen;
+          location = computeLocation(nextTokenPos, nextTokenLen, location);
           nextToken = new Token(location);
           nextTokenPos = pos;
           nextTokenLen = 0;
@@ -1287,6 +1289,7 @@ size_t LexicalAnalyzer::scanningBlockComment(const size_t pos_) {
                 TokenTypeEnum::commentOutBlockDoc);
     }
   }
+  location = computeLocation(nextTokenPos, nextTokenLen, location);
   nextToken = new Token(location);
   return tokenLen;
 };
