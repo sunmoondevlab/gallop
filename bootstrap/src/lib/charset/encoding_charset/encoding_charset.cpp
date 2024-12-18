@@ -25,6 +25,7 @@ const std::string EncodingCharset::_list[] = {
     "UTF-32 LE",
 };
 
-std::string EncodingCharset::getString(const enum EncodingCharsetEnum charset) {
-  return EncodingCharset::_list[int(charset)];
+std::string
+EncodingCharset::getString(const enum EncodingCharsetEnum charset_) {
+  return EncodingCharset::_list[int(charset_)];
 };

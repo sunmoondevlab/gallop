@@ -31,12 +31,14 @@ Utf32Encoder &Utf32Encoder::operator=(const Utf32Encoder &rhs) {
   utf32BufferLen = rhs.utf32BufferLen;
   return *this;
 };
-std::vector<int32_t> Utf32Encoder::getUtf32RunesBuffer() {
+std::vector<int32_t> Utf32Encoder::getUtf32RunesBuffer() const {
   return utf32RunesBuffer;
 };
-std::vector<char> Utf32Encoder::getUtf32Buffer() { return utf32Buffer; };
-size_t Utf32Encoder::getUtf32RunesBufferLen() { return utf32RunesBufferLen; };
-size_t Utf32Encoder::getUtf32BufferLen() { return utf32BufferLen; };
+std::vector<char> Utf32Encoder::getUtf32Buffer() const { return utf32Buffer; };
+size_t Utf32Encoder::getUtf32RunesBufferLen() const {
+  return utf32RunesBufferLen;
+};
+size_t Utf32Encoder::getUtf32BufferLen() const { return utf32BufferLen; };
 
 void Utf32Encoder::encode() {
   size_t utf32Pos = (utf32BomFlag ? 1 : 0), utf32BufPos = utf32Pos << 2;

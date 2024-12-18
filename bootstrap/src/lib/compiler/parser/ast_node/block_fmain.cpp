@@ -24,21 +24,24 @@ AstNodeBlockFmain &AstNodeBlockFmain::operator=(const AstNodeBlockFmain &rhs) {
   next = rhs.next;
   return *this;
 };
-Location AstNodeBlockFmain::getLocation() { return location; };
-std::string AstNodeBlockFmain::getAstNodeTypeString() {
+Location AstNodeBlockFmain::getLocation() const { return location; };
+std::string AstNodeBlockFmain::getAstNodeTypeString() const {
   return AstNodeType::getString(astNodeType);
 };
-AstNodeTypeEnum AstNodeBlockFmain::getAstNodeType() { return astNodeType; };
+AstNodeTypeEnum AstNodeBlockFmain::getAstNodeType() const {
+  return astNodeType;
+};
 
-void AstNodeBlockFmain::printAstNode(const size_t depth, const bool isVerbose) {
+void AstNodeBlockFmain::printAstNode(const size_t depth,
+                                     const bool isVerbose_) {
   indentDepth(depth);
   llvm::outs() << getAstNodeTypeString() << "{\n";
   indentDepth(depth);
   llvm::outs() << "}\n";
 };
-bool AstNodeBlockFmain::hasParent() { return parent != nullptr; };
-bool AstNodeBlockFmain::hasNext() { return next != nullptr; };
-bool AstNodeBlockFmain::hasChild() { return child != nullptr; };
+bool AstNodeBlockFmain::hasParent() const { return parent != nullptr; };
+bool AstNodeBlockFmain::hasNext() const { return next != nullptr; };
+bool AstNodeBlockFmain::hasChild() const { return child != nullptr; };
 
 AstNode *AstNodeBlockFmain::rootNode() {
   AstNode *node = this;
@@ -62,16 +65,16 @@ AstNode *AstNodeBlockFmain::parentNode() { return parent; };
 AstNode *AstNodeBlockFmain::nextNode() { return next; };
 AstNode *AstNodeBlockFmain::childNode() { return child; };
 
-AstNode *AstNodeBlockFmain::putParentNode(AstNode *const node) {
-  parent = node;
+AstNode *AstNodeBlockFmain::putParentNode(AstNode *const node_) {
+  parent = node_;
   return this;
 };
-AstNode *AstNodeBlockFmain::putChildNode(AstNode *const node) {
-  child = node;
+AstNode *AstNodeBlockFmain::putChildNode(AstNode *const node_) {
+  child = node_;
   return child;
 };
-AstNode *AstNodeBlockFmain::putNextNode(AstNode *const node) {
-  next = node;
+AstNode *AstNodeBlockFmain::putNextNode(AstNode *const node_) {
+  next = node_;
   return next;
 };
 

@@ -15,19 +15,19 @@ public:
   ~Args() {};
   Args(const Args &rhs);
   Args &operator=(const Args &rhs);
-  bool isEmitTokens();
-  bool isEmitAst();
-  bool isEmitLlvmIr();
-  bool isVerboseEmit();
-  std::vector<std::string> getArgs();
-  Parser::Option getParserOption();
-  void setEmitTokens(const bool emitTokens_);
-  void setEmitAst(const bool emitAst_);
-  void setEmitLlvmIr(const bool emitLlvmIr_);
-  void setVerboseEmit(const bool verboseEmit_);
+  bool isEmitTokens() const;
+  bool isEmitAst() const;
+  bool isEmitLlvmIr() const;
+  bool isVerboseEmit() const;
+  std::vector<std::string> getArgs() const;
+  Parser::Option getParserOption() const;
+  void setEmitTokens(const bool emitTokens);
+  void setEmitAst(const bool emitAst);
+  void setEmitLlvmIr(const bool emitLlvmIr);
+  void setVerboseEmit(const bool verboseEmit);
   void addArgs(const std::string arg);
-  void setWithCommentOutAll(const bool withCommentOutAll_);
-  void setWithCommentOutForDoc(const bool withCommentOutForDoc_);
+  void setWithCommentOutAll(const bool withCommentOutAll);
+  void setWithCommentOutForDoc(const bool withCommentOutForDoc);
 
 private:
   bool emitTokens;

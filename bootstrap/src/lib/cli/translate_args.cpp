@@ -20,12 +20,12 @@ Args &Args::operator=(const Args &rhs) {
   args = rhs.args;
   return *this;
 };
-bool Args::isEmitTokens() { return emitTokens; };
-bool Args::isEmitAst() { return emitAst; };
-bool Args::isEmitLlvmIr() { return emitLlvmIr; };
-bool Args::isVerboseEmit() { return verboseEmit; };
-Parser::Option Args::getParserOption() { return parserOption; };
-std::vector<std::string> Args::getArgs() { return args; };
+bool Args::isEmitTokens() const { return emitTokens; };
+bool Args::isEmitAst() const { return emitAst; };
+bool Args::isEmitLlvmIr() const { return emitLlvmIr; };
+bool Args::isVerboseEmit() const { return verboseEmit; };
+Parser::Option Args::getParserOption() const { return parserOption; };
+std::vector<std::string> Args::getArgs() const { return args; };
 void Args::setEmitTokens(const bool emitTokens_) { emitTokens = emitTokens_; };
 void Args::setEmitAst(const bool emitAst_) { emitAst = emitAst_; };
 void Args::setEmitLlvmIr(const bool emitLlvmIr_) { emitLlvmIr = emitLlvmIr_; };
@@ -38,7 +38,7 @@ void Args::setWithCommentOutAll(const bool withCommentOutAll_) {
 void Args::setWithCommentOutForDoc(const bool withCommentOutForDoc_) {
   parserOption.setWithCommentOutForDoc(withCommentOutForDoc_);
 };
-void Args::addArgs(const std::string arg) { args.push_back(arg); };
+void Args::addArgs(const std::string arg_) { args.push_back(arg_); };
 
 Args TranslateArgs::translateArgs(int argc, char **argv) {
   Args args = Args();

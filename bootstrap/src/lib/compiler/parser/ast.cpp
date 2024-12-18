@@ -4,8 +4,8 @@
 
 using namespace gallop::Compiler::Parser;
 
-void AstNode::indentDepth(const size_t depth) {
-  for (size_t indent = 0; indent < depth; indent++) {
+void AstNode::indentDepth(const size_t depth_) {
+  for (size_t indent = 0; indent < depth_; indent++) {
     llvm::outs() << "  ";
   };
 };
@@ -21,4 +21,6 @@ Ast &Ast::operator=(const Ast &rhs) {
 
 AstNode *Ast::getRoot() { return root; }
 
-void Ast::printAst(const bool isVerbose) { root->printAstNode(0, isVerbose); };
+void Ast::printAst(const bool isVerbose_) {
+  root->printAstNode(0, isVerbose_);
+};

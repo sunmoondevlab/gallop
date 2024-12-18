@@ -13,11 +13,11 @@ using namespace gallop::Cli;
 using namespace gallop::Compiler::Lexer;
 using namespace gallop::Compiler::Parser;
 
-void CompilerFromFile::execute(Args args) {
-  std::vector<std::string> files = args.getArgs();
+void CompilerFromFile::execute(Args args_) {
+  std::vector<std::string> files = args_.getArgs();
   size_t fileCnt = files.size();
   Ast *ast = new Ast(AstNodeTypeEnum::rootFile);
-  ast->printAst(args.isVerboseEmit());
+  ast->printAst(args_.isVerboseEmit());
   for (size_t fileIdx = 0; fileIdx < fileCnt; fileIdx++) {
     if (!File::isExists(files[fileIdx])) {
       continue;
@@ -31,13 +31,13 @@ void CompilerFromFile::execute(Args args) {
     }
     LexicalAnalyzer lexer(buf);
     Tokens *tokens = lexer.getTokens();
-    if (args.isEmitTokens()) {
+    if (args_.isEmitTokens()) {
       llvm::outs() << "-- " << files[fileIdx] << " to tokens --\n";
-      tokens->printTokens(args.isVerboseEmit());
+      tokens->printTokens(args_.isVerboseEmit());
     }
     AstNodeModuleFile *moduleNode = new AstNodeModuleFile(files[fileIdx]);
-    SyntaxAnalyzer parser(&lexer, moduleNode, args.getParserOption());
+    SyntaxAnalyzer parser(&lexer, moduleNode, args_.getParserOption());
     ast->getRoot()->putChildNode(moduleNode);
-    ast->printAst(args.isVerboseEmit());
+    ast->printAst(args_.isVerboseEmit());
   }
 };

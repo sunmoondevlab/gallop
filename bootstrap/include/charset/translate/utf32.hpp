@@ -14,7 +14,7 @@ namespace Translate {
 
 class Utf32Decoder {
 public:
-  Utf32Decoder(const std::vector<char> &buffer_);
+  Utf32Decoder(const std::vector<char> &buffer);
   ~Utf32Decoder() {};
   Utf32Decoder(const Utf32Decoder &rhs);
   Utf32Decoder &operator=(const Utf32Decoder &rhs);
@@ -30,15 +30,15 @@ private:
 
 class Utf32Encoder {
 public:
-  Utf32Encoder(const std::string &buffer_, const bool littleEndianFlag_,
-               const bool utf32BomFlag_);
+  Utf32Encoder(const std::string &buffer, const bool littleEndianFlag,
+               const bool utf32BomFlag);
   ~Utf32Encoder() {};
   Utf32Encoder(const Utf32Encoder &rhs);
   Utf32Encoder &operator=(const Utf32Encoder &rhs);
-  std::vector<int32_t> getUtf32RunesBuffer();
-  std::vector<char> getUtf32Buffer();
-  size_t getUtf32RunesBufferLen();
-  size_t getUtf32BufferLen();
+  std::vector<int32_t> getUtf32RunesBuffer() const;
+  std::vector<char> getUtf32Buffer() const;
+  size_t getUtf32RunesBufferLen() const;
+  size_t getUtf32BufferLen() const;
 
 private:
   std::string buffer;

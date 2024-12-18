@@ -20,7 +20,7 @@ private:
 };
 class Utf7Decoder {
 public:
-  Utf7Decoder(const std::vector<char> &buffer_);
+  Utf7Decoder(const std::vector<char> &buffer);
   ~Utf7Decoder() {};
   Utf7Decoder(const Utf7Decoder &rhs);
   Utf7Decoder &operator=(const Utf7Decoder &rhs);
@@ -37,8 +37,8 @@ private:
 
 class Utf7Encoder {
 public:
-  Utf7Encoder(const std::string &buffer_, const bool utf7ImapFlag_,
-              const bool utf7BomFlag_, const bool strictUtf7Flag_);
+  Utf7Encoder(const std::string &buffer, const bool utf7ImapFlag,
+              const bool utf7BomFlag, const bool strictUtf7Flag);
   ~Utf7Encoder() {};
   Utf7Encoder(const Utf7Encoder &rhs);
   Utf7Encoder &operator=(const Utf7Encoder &rhs);

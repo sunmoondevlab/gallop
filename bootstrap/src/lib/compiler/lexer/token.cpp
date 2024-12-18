@@ -25,14 +25,14 @@ Token &Token::operator=(const Token &rhs) {
   return *this;
 };
 
-Location Token::getLocation() { return location; };
-TokenTypeEnum Token::getTokenType() { return tokenType; };
-std::string Token::getTokenTypeString() {
+Location Token::getLocation() const { return location; };
+TokenTypeEnum Token::getTokenType() const { return tokenType; };
+std::string Token::getTokenTypeString() const {
   return TokenType::getString(tokenType);
 };
 
-std::string Token::getToken() { return token; };
-size_t Token::getTokenLen() { return tokenLen; };
+std::string Token::getToken() const { return token; };
+size_t Token::getTokenLen() const { return tokenLen; };
 void Token::setTokenVal(const enum TokenTypeEnum tokenType_,
                         const std::string &tokenStr_) {
   tokenType = tokenType_;
@@ -40,22 +40,22 @@ void Token::setTokenVal(const enum TokenTypeEnum tokenType_,
   tokenLen = token.length();
 };
 
-size_t Token::countNewLineInToken(size_t *colLoc_) {
+size_t Token::countNewLineInToken(size_t *column_) {
   const char *tokenPtr = token.c_str();
   char chr0 = 0, chr1 = 0;
   size_t newLineCnt = 0;
   size_t pos = 0;
   for (pos = 0, chr0 = *(tokenPtr + pos); chr0 != '\0';
-       pos++, chr0 = *(tokenPtr + pos), (*colLoc_)++) {
+       pos++, chr0 = *(tokenPtr + pos), (*column_)++) {
     if (chr0 == '\r') {
       chr1 = *(tokenPtr + pos + 1);
       newLineCnt++;
-      *colLoc_ = 0;
+      *column_ = 0;
       if (chr1 == '\n') {
         pos++;
       }
     } else if (chr0 == '\n') {
-      *colLoc_ = 0;
+      *column_ = 0;
       newLineCnt++;
     }
   }
@@ -94,11 +94,11 @@ void Tokens::popDelete() {
   return;
 }
 
-void Tokens::popDeleteFromPos(const size_t pos) {
-  if (pos + 1 > tokenCnt) {
+void Tokens::popDeleteFromPos(const size_t pos_) {
+  if (pos_ + 1 > tokenCnt) {
     return;
   }
-  size_t popCnt = tokenCnt - pos;
+  size_t popCnt = tokenCnt - pos_;
   for (size_t i = 0; i < popCnt; i++) {
     tokenPtrs.pop_back();
     tokenCnt--;
@@ -106,22 +106,22 @@ void Tokens::popDeleteFromPos(const size_t pos) {
   return;
 }
 
-Token Tokens::get(const size_t pos) {
-  if (pos >= 0 && pos < tokenCnt) {
-    return *(tokenPtrs[pos]);
+Token Tokens::get(const size_t pos_) const {
+  if (pos_ >= 0 && pos_ < tokenCnt) {
+    return *(tokenPtrs[pos_]);
   }
   return {};
 };
 
-size_t Tokens::getTokenCnt() { return tokenCnt; };
-TokenTypeEnum Tokens::getLastTokenType() {
+size_t Tokens::getTokenCnt() const { return tokenCnt; };
+TokenTypeEnum Tokens::getLastTokenType() const {
   if (tokenCnt == 0) {
     return TokenTypeEnum::unknown;
   }
   return (tokenPtrs[tokenCnt - 1])->getTokenType();
 };
 
-void Tokens::printTokens(const bool isVerbose) {
+void Tokens::printTokens(const bool isVerbose_) {
   llvm::outs() << "[\n";
   for (size_t i = 0; i < tokenCnt; i++) {
     TokenTypeEnum tokenType = tokenPtrs[i]->getTokenType();
@@ -129,10 +129,10 @@ void Tokens::printTokens(const bool isVerbose) {
     if ((uint32_t(tokenType) >> 24) != 4) {
       llvm::outs() << ": " << tokenPtrs[i]->getToken() << " ";
     }
-    if (isVerbose) {
+    if (isVerbose_) {
       Location loc = tokenPtrs[i]->getLocation();
-      llvm::outs() << ", location::[" << loc.getLineLoc() << ","
-                   << loc.getColLoc() << "],\n";
+      llvm::outs() << ", location::[" << loc.getLine() << "," << loc.getColumn()
+                   << "],\n";
     } else {
       llvm::outs() << ",\n";
     }

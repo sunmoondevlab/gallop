@@ -24,21 +24,24 @@ AstNodeCommentOut &AstNodeCommentOut::operator=(const AstNodeCommentOut &rhs) {
   next = rhs.next;
   return *this;
 };
-Location AstNodeCommentOut::getLocation() { return location; };
-std::string AstNodeCommentOut::getAstNodeTypeString() {
+Location AstNodeCommentOut::getLocation() const { return location; };
+std::string AstNodeCommentOut::getAstNodeTypeString() const {
   return AstNodeType::getString(astNodeType);
 };
-AstNodeTypeEnum AstNodeCommentOut::getAstNodeType() { return astNodeType; };
+AstNodeTypeEnum AstNodeCommentOut::getAstNodeType() const {
+  return astNodeType;
+};
 
-void AstNodeCommentOut::printAstNode(const size_t depth, const bool isVerbose) {
+void AstNodeCommentOut::printAstNode(const size_t depth,
+                                     const bool isVerbose_) {
   indentDepth(depth);
   llvm::outs() << getAstNodeTypeString() << "{\n";
   indentDepth(depth);
   llvm::outs() << "}\n";
 };
-bool AstNodeCommentOut::hasParent() { return parent != nullptr; };
-bool AstNodeCommentOut::hasNext() { return next != nullptr; };
-bool AstNodeCommentOut::hasChild() { return child != nullptr; };
+bool AstNodeCommentOut::hasParent() const { return parent != nullptr; };
+bool AstNodeCommentOut::hasNext() const { return next != nullptr; };
+bool AstNodeCommentOut::hasChild() const { return child != nullptr; };
 
 AstNode *AstNodeCommentOut::rootNode() {
   AstNode *node = this;
@@ -62,16 +65,16 @@ AstNode *AstNodeCommentOut::parentNode() { return parent; };
 AstNode *AstNodeCommentOut::nextNode() { return next; };
 AstNode *AstNodeCommentOut::childNode() { return child; };
 
-AstNode *AstNodeCommentOut::putParentNode(AstNode *const node) {
-  parent = node;
+AstNode *AstNodeCommentOut::putParentNode(AstNode *const node_) {
+  parent = node_;
   return this;
 };
-AstNode *AstNodeCommentOut::putChildNode(AstNode *const node) {
-  child = node;
+AstNode *AstNodeCommentOut::putChildNode(AstNode *const node_) {
+  child = node_;
   return child;
 };
-AstNode *AstNodeCommentOut::putNextNode(AstNode *const node) {
-  next = node;
+AstNode *AstNodeCommentOut::putNextNode(AstNode *const node_) {
+  next = node_;
   return next;
 };
 

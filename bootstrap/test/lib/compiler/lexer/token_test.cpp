@@ -34,8 +34,8 @@ TEST_F(TokenTest, TokenTypeStringCheck) {
 
 TEST_F(TokenTest, TokenCheck) {
   Token token(Location(1, 1));
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::unknown);
   EXPECT_EQ(token.getToken(), "");
   token.setTokenVal(TokenTypeEnum::literalDecimalNumberIntegralPart, "123");
@@ -45,26 +45,26 @@ TEST_F(TokenTest, TokenCheck) {
 
   token = Token(Location(2, 1), TokenTypeEnum::commentOutBlock,
                 "comment for doc\nthis comment is test\rtest comment\r\ndo");
-  size_t colLoc = 1;
-  EXPECT_EQ(token.countNewLineInToken(&colLoc), 3ul);
-  EXPECT_EQ(colLoc, 3ul);
+  size_t column = 1;
+  EXPECT_EQ(token.countNewLineInToken(&column), 3ul);
+  EXPECT_EQ(column, 3ul);
 
   token = Token(Location("test.trot", 1, 1), TokenTypeEnum::commentOutBlock,
                 "comment for doc\nthis comment is test\rtest comment\r\ndo");
-  colLoc = 1;
+  column = 1;
   EXPECT_EQ(token.getLocation().getFilename(), "test.trot");
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
-  EXPECT_EQ(token.countNewLineInToken(&colLoc), 3ul);
-  EXPECT_EQ(colLoc, 3ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
+  EXPECT_EQ(token.countNewLineInToken(&column), 3ul);
+  EXPECT_EQ(column, 3ul);
 };
 
 class TokensTest : public ::testing::Test {};
 TEST_F(TokensTest, TokensCheck) {
   Tokens tokens;
   Token token = tokens.get(0);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 0ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 0ul);
+  EXPECT_EQ(token.getLocation().getLine(), 0ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 0ul);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::unknown);
   EXPECT_EQ(token.getToken(), "");
   EXPECT_EQ(tokens.getLastTokenType(), TokenTypeEnum::unknown);
@@ -72,8 +72,8 @@ TEST_F(TokensTest, TokensCheck) {
   tokens.push(
       new Token(Location(1, 1), TokenTypeEnum::symbolCharacterMinus, "-"));
   token = tokens.get(0);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterMinus);
   EXPECT_EQ(tokens.getLastTokenType(), TokenTypeEnum::symbolCharacterMinus);
   EXPECT_EQ(token.getToken(), "-");
@@ -85,8 +85,8 @@ TEST_F(TokensTest, TokensCheck) {
       Location(2, 4), TokenTypeEnum::literalDecimalNumberIntegralPart, "112"));
 
   Token token1 = tokens.get(2);
-  EXPECT_EQ(token1.getLocation().getLineLoc(), 2ul);
-  EXPECT_EQ(token1.getLocation().getColLoc(), 4ul);
+  EXPECT_EQ(token1.getLocation().getLine(), 2ul);
+  EXPECT_EQ(token1.getLocation().getColumn(), 4ul);
   EXPECT_EQ(token1.getTokenType(),
             TokenTypeEnum::literalDecimalNumberIntegralPart);
   EXPECT_EQ(tokens.getLastTokenType(),
@@ -104,8 +104,8 @@ TEST_F(TokensTest, TokensCheck) {
   tokens.push(tokens2);
   EXPECT_EQ(tokens.getTokenCnt(), 5ul);
   Token token2 = tokens.get(4);
-  EXPECT_EQ(token2.getLocation().getLineLoc(), 4ul);
-  EXPECT_EQ(token2.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token2.getLocation().getLine(), 4ul);
+  EXPECT_EQ(token2.getLocation().getColumn(), 1ul);
 
   tokens.popDelete();
   EXPECT_EQ(tokens.getTokenCnt(), 4ul);

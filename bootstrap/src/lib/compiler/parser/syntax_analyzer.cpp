@@ -24,7 +24,7 @@ SyntaxAnalyzer &SyntaxAnalyzer::operator=(const SyntaxAnalyzer &rhs) {
 LexicalAnalyzer *SyntaxAnalyzer::getLexicalAnalyzer() {
   return lexicalAnalyzer;
 };
-size_t SyntaxAnalyzer::getParsedTokenPos() { return parsedTokenPos; };
+size_t SyntaxAnalyzer::getParsedTokenPos() const { return parsedTokenPos; };
 
 void SyntaxAnalyzer::parse() {
   size_t tokenCnt = lexicalAnalyzer->getTokens()->getTokenCnt();

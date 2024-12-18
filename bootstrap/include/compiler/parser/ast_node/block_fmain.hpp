@@ -9,17 +9,17 @@ namespace Parser {
 
 class AstNodeBlockFmain : public AstNode {
 public:
-  AstNodeBlockFmain(const Location location_);
+  AstNodeBlockFmain(const Location location);
   AstNodeBlockFmain(const AstNodeBlockFmain &rhs);
   ~AstNodeBlockFmain() {};
   AstNodeBlockFmain &operator=(const AstNodeBlockFmain &rhs);
-  Location getLocation() override;
-  std::string getAstNodeTypeString() override;
-  AstNodeTypeEnum getAstNodeType() override;
+  Location getLocation() const override;
+  std::string getAstNodeTypeString() const override;
+  AstNodeTypeEnum getAstNodeType() const override;
   void printAstNode(const size_t depth, const bool isVerbose) override;
-  bool hasParent() override;
-  bool hasNext() override;
-  bool hasChild() override;
+  bool hasParent() const override;
+  bool hasNext() const override;
+  bool hasChild() const override;
   AstNode *moduleNode() override;
   AstNode *rootNode() override;
   AstNode *parentNode() override;
@@ -28,7 +28,7 @@ public:
   AstNode *putParentNode(AstNode *const node) override;
   AstNode *putNextNode(AstNode *const node) override;
   AstNode *putChildNode(AstNode *const node) override;
-  void setBegenEndLocation(const Location location_, const bool endFlag_);
+  void setBegenEndLocation(const Location location, const bool endFlag);
 
 private:
   Location location;

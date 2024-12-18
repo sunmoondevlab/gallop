@@ -41,8 +41,8 @@ TEST_F(LexicalAnalyzerTest, ConstructorCheck) {
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::identifier);
   EXPECT_EQ(token.getToken(), "a");
   EXPECT_EQ(token.getLocation().getFilename(), "");
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
 
   str = "a:i32=1;\nfmain{\n exit 0;\n}\n";
   buf.clear();
@@ -59,8 +59,8 @@ TEST_F(LexicalAnalyzerTest, ConstructorCheck) {
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::identifier);
   EXPECT_EQ(token.getToken(), "a");
   EXPECT_EQ(token.getLocation().getFilename(), "");
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
 
   // compiler from file
   str = "a:i32=1;\nfmain{\n exit 0;\n}";
@@ -78,8 +78,8 @@ TEST_F(LexicalAnalyzerTest, ConstructorCheck) {
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::identifier);
   EXPECT_EQ(token.getToken(), "a");
   EXPECT_EQ(token.getLocation().getFilename(), "test.trot");
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
 
   // interpreter
   str = "a:i32=1;\n";
@@ -96,8 +96,8 @@ TEST_F(LexicalAnalyzerTest, ConstructorCheck) {
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::identifier);
   EXPECT_EQ(token.getToken(), "a");
   EXPECT_EQ(token.getLocation().getFilename(), "");
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
 };
 
 TEST_F(LexicalAnalyzerTest, IdentifierCheck) {
@@ -935,8 +935,8 @@ TEST_F(LexicalAnalyzerTest, DecimalNumberCheck) {
   tokens = l.getTokens();
   EXPECT_EQ(tokens->getTokenCnt(), 1ul);
   token = tokens->get(0);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalDecimalNumberIntegralPart);
   EXPECT_EQ(token.getToken(), "1234");
@@ -949,13 +949,13 @@ TEST_F(LexicalAnalyzerTest, DecimalNumberCheck) {
   tokens = l.getTokens();
   EXPECT_EQ(tokens->getTokenCnt(), 2ul);
   token = tokens->get(0);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterMinus);
   EXPECT_EQ(token.getToken(), "-");
   token = tokens->get(1);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 2ul);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalDecimalNumberIntegralPart);
   EXPECT_EQ(token.getToken(), "12345");
@@ -968,8 +968,8 @@ TEST_F(LexicalAnalyzerTest, DecimalNumberCheck) {
   tokens = l.getTokens();
   EXPECT_EQ(tokens->getTokenCnt(), 1ul);
   token = tokens->get(0);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 1ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 1ul);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalDecimalNumberIntegralPart);
   EXPECT_EQ(token.getToken(), "0");
@@ -982,13 +982,13 @@ TEST_F(LexicalAnalyzerTest, DecimalNumberCheck) {
   tokens = l.getTokens();
   EXPECT_EQ(tokens->getTokenCnt(), 2ul);
   token = tokens->get(0);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 6ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 6ul);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterMinus);
   EXPECT_EQ(token.getToken(), "-");
   token = tokens->get(1);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 1ul);
-  EXPECT_EQ(token.getLocation().getColLoc(), 7ul);
+  EXPECT_EQ(token.getLocation().getLine(), 1ul);
+  EXPECT_EQ(token.getLocation().getColumn(), 7ul);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalDecimalNumberIntegralPart);
   EXPECT_EQ(token.getToken(), "0");
@@ -1639,7 +1639,7 @@ TEST_F(LexicalAnalyzerTest, RuneCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalRune);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "'1\\\r\n1";
@@ -1655,7 +1655,7 @@ TEST_F(LexicalAnalyzerTest, RuneCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalRune);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "'1\\\r\n";
@@ -1681,7 +1681,7 @@ TEST_F(LexicalAnalyzerTest, RuneCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalRune);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "'1.\\\r";
@@ -1707,7 +1707,7 @@ TEST_F(LexicalAnalyzerTest, RuneCheck) {
   EXPECT_EQ(token.getToken(), "1.");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalRune);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterSinglequote);
@@ -1763,7 +1763,7 @@ TEST_F(LexicalAnalyzerTest, RuneCheck) {
   EXPECT_EQ(token.getToken(), "1\r\n");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalRune);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "'1.\r";
@@ -1790,7 +1790,7 @@ TEST_F(LexicalAnalyzerTest, RuneCheck) {
   EXPECT_EQ(token.getToken(), "1.\r");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalRune);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterSinglequote);
@@ -2009,7 +2009,7 @@ TEST_F(LexicalAnalyzerTest, StringCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalString);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "\"1\\\r\n1";
@@ -2025,7 +2025,7 @@ TEST_F(LexicalAnalyzerTest, StringCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalString);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "\"1\\\r\n";
@@ -2051,7 +2051,7 @@ TEST_F(LexicalAnalyzerTest, StringCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalString);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "\"1.\\\r";
@@ -2077,7 +2077,7 @@ TEST_F(LexicalAnalyzerTest, StringCheck) {
   EXPECT_EQ(token.getToken(), "1.");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalString);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterDoublequote);
@@ -2133,7 +2133,7 @@ TEST_F(LexicalAnalyzerTest, StringCheck) {
   EXPECT_EQ(token.getToken(), "1\r\n");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalString);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "\"1.\r";
@@ -2160,7 +2160,7 @@ TEST_F(LexicalAnalyzerTest, StringCheck) {
   EXPECT_EQ(token.getToken(), "1.\r");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::literalString);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterDoublequote);
@@ -2381,7 +2381,7 @@ TEST_F(LexicalAnalyzerTest, RegularExpressionPatternCheck) {
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalRegularExpressionPattern);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "`1\\\r\n1";
@@ -2399,7 +2399,7 @@ TEST_F(LexicalAnalyzerTest, RegularExpressionPatternCheck) {
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalRegularExpressionPattern);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "`1\\\r\n";
@@ -2428,7 +2428,7 @@ TEST_F(LexicalAnalyzerTest, RegularExpressionPatternCheck) {
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalRegularExpressionPattern);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "`1.\\\r";
@@ -2457,7 +2457,7 @@ TEST_F(LexicalAnalyzerTest, RegularExpressionPatternCheck) {
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalRegularExpressionPattern);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterBackquote);
@@ -2518,7 +2518,7 @@ TEST_F(LexicalAnalyzerTest, RegularExpressionPatternCheck) {
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalRegularExpressionPattern);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "`1.\r";
@@ -2548,7 +2548,7 @@ TEST_F(LexicalAnalyzerTest, RegularExpressionPatternCheck) {
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(),
             TokenTypeEnum::literalRegularExpressionPattern);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::symbolCharacterBackquote);
@@ -2944,7 +2944,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlock);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "//<1\\\r\n1";
@@ -2960,7 +2960,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlock);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "//<1\\\r\n";
@@ -2986,7 +2986,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlock);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "//<1.\\\r";
@@ -3012,7 +3012,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockCheck) {
   EXPECT_EQ(token.getToken(), "1.");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlock);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(),
@@ -3069,7 +3069,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockCheck) {
   EXPECT_EQ(token.getToken(), "1\r\n");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlock);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "//<1.\r";
@@ -3096,7 +3096,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockCheck) {
   EXPECT_EQ(token.getToken(), "1.\r");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlock);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(),
@@ -3285,7 +3285,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlockDoc);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "/#<1\\\r\n1";
@@ -3302,7 +3302,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlockDoc);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "/#<1\\\r\n";
@@ -3330,7 +3330,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlockDoc);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "/#<1.\\\r";
@@ -3358,7 +3358,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1.");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlockDoc);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(),
@@ -3419,7 +3419,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1\r\n");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlockDoc);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
 
   str = "/#<1.\r";
@@ -3448,7 +3448,7 @@ TEST_F(LexicalAnalyzerTest, CommentOutBlockDockCheck) {
   EXPECT_EQ(token.getToken(), "1.\r");
   token = tokens->get(2);
   EXPECT_EQ(token.getTokenType(), TokenTypeEnum::commentOutBlockDoc);
-  EXPECT_EQ(token.getLocation().getLineLoc(), 2ul);
+  EXPECT_EQ(token.getLocation().getLine(), 2ul);
   EXPECT_EQ(token.getToken(), "1");
   token = tokens->get(3);
   EXPECT_EQ(token.getTokenType(),

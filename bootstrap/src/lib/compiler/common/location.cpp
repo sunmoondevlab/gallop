@@ -2,28 +2,28 @@
 
 using namespace gallop::Compiler;
 
-Location::Location(const size_t lineLoc_, const size_t colLoc_)
-    : filename(""), lineLoc(lineLoc_), colLoc(colLoc_) {};
-Location::Location(const std::string &filename_, const size_t lineLoc_,
-                   const size_t colLoc_)
-    : filename(filename_), lineLoc(lineLoc_), colLoc(colLoc_) {};
+Location::Location(const size_t line_, const size_t column_)
+    : filename(""), line(line_), column(column_) {};
+Location::Location(const std::string &filename_, const size_t line_,
+                   const size_t column_)
+    : filename(filename_), line(line_), column(column_) {};
 Location::Location(const Location &rhs)
-    : filename(rhs.filename), lineLoc(rhs.lineLoc), colLoc(rhs.colLoc) {};
+    : filename(rhs.filename), line(rhs.line), column(rhs.column) {};
 Location &Location::operator=(const Location &rhs) {
   filename = rhs.filename;
-  lineLoc = rhs.lineLoc;
-  colLoc = rhs.colLoc;
+  line = rhs.line;
+  column = rhs.column;
   return *this;
 };
 
-std::string Location::getString() {
-  return lineLoc > 0 ? (filename + ":" + std::to_string(lineLoc) + ":" +
-                        std::to_string(colLoc))
-                     : filename;
+std::string Location::getString() const {
+  return line > 0 ? (filename + ":" + std::to_string(line) + ":" +
+                     std::to_string(column))
+                  : filename;
 };
-
-std::string Location::getFilename() { return filename; };
-
-size_t Location::getLineLoc() { return lineLoc; };
-
-size_t Location::getColLoc() { return colLoc; };
+std::string Location::getFilename() const { return filename; };
+size_t Location::getLine() const { return line; };
+size_t Location::getColumn() const { return column; };
+void Location::addLine(const size_t lineStep_) { line += lineStep_; };
+void Location::addColumn(const size_t columnStep_) { column += columnStep_; };
+void Location::rewindColumn() { column = 1; };

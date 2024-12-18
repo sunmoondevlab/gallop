@@ -10,8 +10,8 @@ Option &Option::operator=(const Option &rhs) {
   withCommentOutForDoc = rhs.withCommentOutForDoc;
   return *this;
 };
-bool Option::isWithCommentOutAll() { return withCommentOutAll; };
-bool Option::isWithCommentOutForDoc() { return withCommentOutForDoc; };
+bool Option::isWithCommentOutAll() const { return withCommentOutAll; };
+bool Option::isWithCommentOutForDoc() const { return withCommentOutForDoc; };
 void Option::setWithCommentOutAll(const bool withCommentOutAll_) {
   withCommentOutAll = withCommentOutAll_;
 };

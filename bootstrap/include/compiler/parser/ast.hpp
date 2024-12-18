@@ -14,13 +14,13 @@ namespace Parser {
 class AstNode {
 public:
   virtual ~AstNode() {};
-  virtual Location getLocation() = 0;
-  virtual AstNodeTypeEnum getAstNodeType() = 0;
-  virtual std::string getAstNodeTypeString() = 0;
+  virtual Location getLocation() const = 0;
+  virtual AstNodeTypeEnum getAstNodeType() const = 0;
+  virtual std::string getAstNodeTypeString() const = 0;
   virtual void printAstNode(const size_t depth, const bool isVerbose) = 0;
-  virtual bool hasParent() = 0;
-  virtual bool hasNext() = 0;
-  virtual bool hasChild() = 0;
+  virtual bool hasParent() const = 0;
+  virtual bool hasNext() const = 0;
+  virtual bool hasChild() const = 0;
   virtual AstNode *rootNode() = 0;
   virtual AstNode *moduleNode() = 0;
   virtual AstNode *parentNode() = 0;
@@ -36,7 +36,7 @@ public:
 
 class Ast {
 public:
-  Ast(const AstNodeTypeEnum nodeType_);
+  Ast(const AstNodeTypeEnum nodeType);
   ~Ast() {};
   Ast(const Ast &rhs);
   Ast &operator=(const Ast &rhs);

@@ -10,10 +10,10 @@ public:
   ~Option() {};
   Option(const Option &rhs);
   Option &operator=(const Option &rhs);
-  bool isWithCommentOutAll();
-  bool isWithCommentOutForDoc();
-  void setWithCommentOutAll(const bool withCommentOutAll_);
-  void setWithCommentOutForDoc(const bool withCommentOutForDoc_);
+  bool isWithCommentOutAll() const;
+  bool isWithCommentOutForDoc() const;
+  void setWithCommentOutAll(const bool withCommentOutAll);
+  void setWithCommentOutForDoc(const bool withCommentOutForDoc);
 
 private:
   bool withCommentOutAll;

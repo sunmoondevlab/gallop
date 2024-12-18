@@ -9,17 +9,17 @@ namespace Parser {
 
 class AstNodeRoot : public AstNode {
 public:
-  AstNodeRoot(const AstNodeTypeEnum nodeType_);
+  AstNodeRoot(const AstNodeTypeEnum nodeType);
   ~AstNodeRoot() {};
   AstNodeRoot(const AstNodeRoot &rhs);
   AstNodeRoot &operator=(const AstNodeRoot &rhs);
-  Location getLocation() override;
-  std::string getAstNodeTypeString() override;
-  AstNodeTypeEnum getAstNodeType() override;
+  Location getLocation() const override;
+  std::string getAstNodeTypeString() const override;
+  AstNodeTypeEnum getAstNodeType() const override;
   void printAstNode(const size_t depth, const bool isVerbose) override;
-  bool hasParent() override;
-  bool hasNext() override;
-  bool hasChild() override;
+  bool hasParent() const override;
+  bool hasNext() const override;
+  bool hasChild() const override;
   AstNode *moduleNode() override;
   AstNode *rootNode() override;
   AstNode *parentNode() override;

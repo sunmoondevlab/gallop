@@ -3,47 +3,47 @@
 
 using namespace gallop;
 
-bool File::isExists(const std::string filename) {
-  return (std::filesystem::exists(filename));
+bool File::isExists(const std::string filename_) {
+  return (std::filesystem::exists(filename_));
 };
 
-bool File::matchExtension(const std::string filename,
-                          const std::string extension) {
-  int32_t extPos = filename.find_last_of('.');
+bool File::matchExtension(const std::string filename_,
+                          const std::string extension_) {
+  int32_t extPos = filename_.find_last_of('.');
   std::string extFilename =
-      filename.substr(extPos + 1, filename.size() - extPos - 1);
-  return (extension == extFilename);
+      filename_.substr(extPos + 1, filename_.size() - extPos - 1);
+  return (extension_ == extFilename);
 };
 
-std::string File::replaceExtension(const std::string filename,
-                                   const std::string newExtension) {
-  int32_t extPos = filename.find_last_of('.');
-  std::string basename = filename.substr(0, extPos + 1);
-  return basename.append(newExtension);
+std::string File::replaceExtension(const std::string filename_,
+                                   const std::string newExtension_) {
+  int32_t extPos = filename_.find_last_of('.');
+  std::string basename = filename_.substr(0, extPos + 1);
+  return basename.append(newExtension_);
 };
 
-std::string File::getDirectory(const std::string filename) {
-  int32_t slashPos = filename.find_last_of('/');
-  return filename.substr(0, slashPos);
+std::string File::getDirectory(const std::string filename_) {
+  int32_t slashPos = filename_.find_last_of('/');
+  return filename_.substr(0, slashPos);
 };
-std::string File::getBasename(const std::string filename) {
-  int32_t slashPos = filename.find_last_of('/');
-  return filename.substr(slashPos + 1, filename.size() - slashPos);
+std::string File::getBasename(const std::string filename_) {
+  int32_t slashPos = filename_.find_last_of('/');
+  return filename_.substr(slashPos + 1, filename_.size() - slashPos);
 };
-std::string File::getBasename(const std::string filename,
-                              const bool isOmitExt) {
-  std::string basename = getBasename(filename);
-  if (!isOmitExt) {
+std::string File::getBasename(const std::string filename_,
+                              const bool isOmitExt_) {
+  std::string basename = getBasename(filename_);
+  if (!isOmitExt_) {
     return basename;
   }
   int32_t extPos = basename.find_last_of('.');
   return basename.substr(0, extPos);
 };
 
-std::vector<char> File::readAllBinary(const std::string filename) {
-  FILE *file = fopen(filename.c_str(), "rb");
+std::vector<char> File::readAllBinary(const std::string filename_) {
+  FILE *file = fopen(filename_.c_str(), "rb");
   if (file == nullptr) {
-    throw "file not fount " + filename;
+    throw "file not fount " + filename_;
   }
   fpos_t fsize;
   fseek(file, 0, SEEK_END);

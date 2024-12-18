@@ -10,12 +10,12 @@ using namespace gallop::Cli;
 using namespace gallop::Compiler::Lexer;
 using namespace gallop::Compiler::Parser;
 
-void CompilerFromStdin::execute(Args args) {
+void CompilerFromStdin::execute(Args args_) {
   Ast *ast = new Ast(AstNodeTypeEnum::rootStdin);
   AstNodeModuleStdin *moduleNode = new AstNodeModuleStdin();
   ast->getRoot()->putChildNode(moduleNode);
 
-  ast->printAst(args.isVerboseEmit());
+  ast->printAst(args_.isVerboseEmit());
   std::vector<char> buf;
   while (std::cin) {
     std::string str;
@@ -32,5 +32,5 @@ void CompilerFromStdin::execute(Args args) {
     std::cerr << "Unsupport charcter set\n";
     return;
   }
-  ast->printAst(args.isVerboseEmit());
+  ast->printAst(args_.isVerboseEmit());
 };

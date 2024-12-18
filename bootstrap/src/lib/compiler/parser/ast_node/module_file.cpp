@@ -26,13 +26,18 @@ AstNodeModuleFile &AstNodeModuleFile::operator=(const AstNodeModuleFile &rhs) {
   moduleName = rhs.moduleName;
   return *this;
 };
-Location AstNodeModuleFile::getLocation() { return Location(filename, 0, 0); };
-std::string AstNodeModuleFile::getAstNodeTypeString() {
+Location AstNodeModuleFile::getLocation() const {
+  return Location(filename, 0, 0);
+};
+std::string AstNodeModuleFile::getAstNodeTypeString() const {
   return AstNodeType::getString(astNodeType);
 };
-AstNodeTypeEnum AstNodeModuleFile::getAstNodeType() { return astNodeType; };
+AstNodeTypeEnum AstNodeModuleFile::getAstNodeType() const {
+  return astNodeType;
+};
 
-void AstNodeModuleFile::printAstNode(const size_t depth, const bool isVerbose) {
+void AstNodeModuleFile::printAstNode(const size_t depth,
+                                     const bool isVerbose_) {
   indentDepth(depth);
   llvm::outs() << getAstNodeTypeString() << "{\n";
 
@@ -47,15 +52,15 @@ void AstNodeModuleFile::printAstNode(const size_t depth, const bool isVerbose) {
   llvm::outs() << "}";
   if (next != nullptr) {
     llvm::outs() << ",\n";
-    next->printAstNode(depth, isVerbose);
+    next->printAstNode(depth, isVerbose_);
   } else {
     llvm::outs() << "\n";
   }
 };
 
-bool AstNodeModuleFile::hasParent() { return false; };
-bool AstNodeModuleFile::hasNext() { return next != nullptr; };
-bool AstNodeModuleFile::hasChild() { return child != nullptr; };
+bool AstNodeModuleFile::hasParent() const { return false; };
+bool AstNodeModuleFile::hasNext() const { return next != nullptr; };
+bool AstNodeModuleFile::hasChild() const { return child != nullptr; };
 
 AstNode *AstNodeModuleFile::rootNode() {
   AstNode *node = this;
@@ -69,15 +74,17 @@ AstNode *AstNodeModuleFile::parentNode() { return nullptr; };
 AstNode *AstNodeModuleFile::nextNode() { return next; };
 AstNode *AstNodeModuleFile::childNode() { return child; };
 
-AstNode *AstNodeModuleFile::putParentNode(AstNode *const node) { return this; };
-AstNode *AstNodeModuleFile::putChildNode(AstNode *const node) {
-  child = node;
-  node->putParentNode(this);
+AstNode *AstNodeModuleFile::putParentNode(AstNode *const node_) {
+  return this;
+};
+AstNode *AstNodeModuleFile::putChildNode(AstNode *const node_) {
+  child = node_;
+  node_->putParentNode(this);
   return child;
 };
-AstNode *AstNodeModuleFile::putNextNode(AstNode *const node) {
-  next = node;
-  (dynamic_cast<AstNodeModuleFile *>(node))->putPrevNode(this);
+AstNode *AstNodeModuleFile::putNextNode(AstNode *const node_) {
+  next = node_;
+  (dynamic_cast<AstNodeModuleFile *>(node_))->putPrevNode(this);
   return next;
 };
 AstNode *AstNodeModuleFile::getLastModuleNode() {
@@ -87,26 +94,26 @@ AstNode *AstNodeModuleFile::getLastModuleNode() {
   }
   return node;
 };
-bool AstNodeModuleFile::hasPrev() { return prev != nullptr; };
+bool AstNodeModuleFile::hasPrev() const { return prev != nullptr; };
 AstNode *AstNodeModuleFile::prevNode() { return prev; };
-AstNode *AstNodeModuleFile::putPrevNode(AstNode *const node) {
-  prev = node;
+AstNode *AstNodeModuleFile::putPrevNode(AstNode *const node_) {
+  prev = node_;
   return this;
 };
 
-bool AstNodeModuleFile::isDefinedPkgName() {
+bool AstNodeModuleFile::isDefinedPkgName() const {
   return defaultPkgName != packageName;
 };
-void AstNodeModuleFile::replacePackageName(const std::string pkgName) {
-  if (pkgName != "") {
-    packageName = pkgName;
+void AstNodeModuleFile::replacePackageName(const std::string pkgName_) {
+  if (pkgName_ != "") {
+    packageName = pkgName_;
   }
 };
-bool AstNodeModuleFile::isDefinedModName() {
+bool AstNodeModuleFile::isDefinedModName() const {
   return defaultModName != moduleName;
 };
-void AstNodeModuleFile::replaceModuleName(const std::string modName) {
-  if (modName != "") {
-    moduleName = modName;
+void AstNodeModuleFile::replaceModuleName(const std::string modName_) {
+  if (modName_ != "") {
+    moduleName = modName_;
   }
 };

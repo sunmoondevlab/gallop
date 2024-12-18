@@ -31,12 +31,14 @@ Utf16Encoder &Utf16Encoder::operator=(const Utf16Encoder &rhs) {
   utf16BufferLen = rhs.utf16BufferLen;
   return *this;
 };
-std::vector<int32_t> Utf16Encoder::getUtf16RunesBuffer() {
+std::vector<int32_t> Utf16Encoder::getUtf16RunesBuffer() const {
   return utf16RunesBuffer;
 };
-std::vector<char> Utf16Encoder::getUtf16Buffer() { return utf16Buffer; };
-size_t Utf16Encoder::getUtf16RunesBufferLen() { return utf16RunesBufferLen; };
-size_t Utf16Encoder::getUtf16BufferLen() { return utf16BufferLen; };
+std::vector<char> Utf16Encoder::getUtf16Buffer() const { return utf16Buffer; };
+size_t Utf16Encoder::getUtf16RunesBufferLen() const {
+  return utf16RunesBufferLen;
+};
+size_t Utf16Encoder::getUtf16BufferLen() const { return utf16BufferLen; };
 
 void Utf16Encoder::encode() {
   size_t utf16Pos = (utf16BomFlag ? 1 : 0), utf16BufPos = utf16Pos << 1;

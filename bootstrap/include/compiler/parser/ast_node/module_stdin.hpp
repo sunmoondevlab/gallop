@@ -14,13 +14,13 @@ public:
   ~AstNodeModuleStdin() {};
   AstNodeModuleStdin(const AstNodeModuleStdin &rhs);
   AstNodeModuleStdin &operator=(const AstNodeModuleStdin &rhs);
-  Location getLocation() override;
-  std::string getAstNodeTypeString() override;
-  AstNodeTypeEnum getAstNodeType() override;
+  Location getLocation() const override;
+  std::string getAstNodeTypeString() const override;
+  AstNodeTypeEnum getAstNodeType() const override;
   void printAstNode(const size_t depth, const bool isVerbose) override;
-  bool hasParent() override;
-  bool hasNext() override;
-  bool hasChild() override;
+  bool hasParent() const override;
+  bool hasNext() const override;
+  bool hasChild() const override;
   AstNode *moduleNode() override;
   AstNode *rootNode() override;
   AstNode *parentNode() override;
@@ -30,10 +30,10 @@ public:
   AstNode *putNextNode(AstNode *const node) override;
   AstNode *putChildNode(AstNode *const node) override;
   AstNode *getLastModuleNode();
-  bool hasPrev();
+  bool hasPrev() const;
   AstNode *prevNode();
   AstNode *putPrevNode(AstNode *const node);
-  bool isDefinedModName();
+  bool isDefinedModName() const;
   void replaceModuleName(const std::string modName);
 
 private:

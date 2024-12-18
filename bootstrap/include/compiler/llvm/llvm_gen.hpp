@@ -12,7 +12,7 @@ namespace Compiler {
 namespace LLVM {
 class CodeGen {
 public:
-  CodeGen(Parser::Ast *const ast_);
+  CodeGen(Parser::Ast *const ast);
   ~CodeGen() {};
   CodeGen(const CodeGen &rhs);
   CodeGen &operator=(const CodeGen &rhs);

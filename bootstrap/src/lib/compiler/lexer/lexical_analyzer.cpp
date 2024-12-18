@@ -5,7 +5,7 @@ using namespace gallop::Compiler::Lexer;
 
 // interpreter
 LexicalAnalyzer::LexicalAnalyzer()
-    : buffer(std::string("")), bufferLen(0), lineLoc(0), colLoc(0),
+    : buffer(std::string("")), bufferLen(0), location(Location(0, 0)),
       interpreterFlag(true), laContFlags(0), filename(""), lineCnt(0),
       lines({}), tokens(new Tokens()) {
   bufferPtr = buffer.c_str();
@@ -14,9 +14,9 @@ LexicalAnalyzer::LexicalAnalyzer()
 // compiler from stdin
 LexicalAnalyzer::LexicalAnalyzer(const std::vector<char> &buffer_)
     : buffer(std::string(buffer_.begin(), buffer_.end())),
-      bufferLen(buffer_.size()), lineLoc(1), colLoc(1), interpreterFlag(false),
-      laContFlags(0), filename(""), lineCnt(0), lines({}),
-      tokens(new Tokens()) {
+      bufferLen(buffer_.size()), location(Location(1, 1)),
+      interpreterFlag(false), laContFlags(0), filename(""), lineCnt(0),
+      lines({}), tokens(new Tokens()) {
   bufferPtr = buffer.c_str();
   splitLinesFromBuffer();
   tokenize();
@@ -26,9 +26,9 @@ LexicalAnalyzer::LexicalAnalyzer(const std::vector<char> &buffer_)
 LexicalAnalyzer::LexicalAnalyzer(const std::vector<char> &buffer_,
                                  const std::string &filename_)
     : buffer(std::string(buffer_.begin(), buffer_.end())),
-      bufferLen(buffer_.size()), lineLoc(1), colLoc(1), interpreterFlag(false),
-      laContFlags(0), filename(filename_), lineCnt(0), lines({}),
-      tokens(new Tokens()) {
+      bufferLen(buffer_.size()), location(Location(filename_, 1, 1)),
+      interpreterFlag(false), laContFlags(0), filename(filename_), lineCnt(0),
+      lines({}), tokens(new Tokens()) {
   bufferPtr = buffer.c_str();
   splitLinesFromBuffer();
   tokenize();
@@ -36,10 +36,9 @@ LexicalAnalyzer::LexicalAnalyzer(const std::vector<char> &buffer_,
 
 // copier
 LexicalAnalyzer::LexicalAnalyzer(const LexicalAnalyzer &rhs)
-    : buffer(rhs.buffer), bufferLen(rhs.bufferLen), lineLoc(rhs.lineLoc),
-      colLoc(rhs.colLoc), interpreterFlag(rhs.interpreterFlag),
-      laContFlags(rhs.laContFlags), filename(rhs.filename),
-      lineCnt(rhs.lineCnt), lines(rhs.lines) {
+    : buffer(rhs.buffer), bufferLen(rhs.bufferLen), location(rhs.location),
+      interpreterFlag(rhs.interpreterFlag), laContFlags(rhs.laContFlags),
+      filename(rhs.filename), lineCnt(rhs.lineCnt), lines(rhs.lines) {
   bufferPtr = buffer.c_str();
   tokens = new Tokens();
   *tokens = *rhs.tokens;
@@ -50,8 +49,7 @@ LexicalAnalyzer &LexicalAnalyzer::operator=(const LexicalAnalyzer &rhs) {
   buffer = rhs.buffer;
   bufferLen = rhs.bufferLen;
   bufferPtr = buffer.c_str();
-  lineLoc = rhs.lineLoc;
-  colLoc = rhs.colLoc;
+  location = rhs.location;
   interpreterFlag = rhs.interpreterFlag;
   laContFlags = rhs.laContFlags;
   filename = rhs.filename;
@@ -69,9 +67,9 @@ void LexicalAnalyzer::tokenizeNextBuffer(const std::vector<char> &buffer_) {
   buffer = std::string(buffer_.begin(), buffer_.end());
   bufferLen = buffer_.size();
   bufferPtr = buffer.c_str();
-  if (lineLoc == 0) {
-    lineLoc++;
-    colLoc = 1;
+  if (location.getLine() == 0) {
+    location.addLine(1);
+    location.rewindColumn();
   }
   splitLinesFromBuffer();
   tokenize();
@@ -100,21 +98,21 @@ void LexicalAnalyzer::splitLinesFromBuffer() {
   }
 };
 
-uint64_t LexicalAnalyzer::getLexAnlzFlag() { return laContFlags; };
-bool LexicalAnalyzer::isInterpreter() { return interpreterFlag; };
-bool LexicalAnalyzer::isFromFile() { return filename != ""; };
-size_t LexicalAnalyzer::getLineCnt() { return lineCnt; };
-std::string LexicalAnalyzer::getLineString(const size_t lineLoc_) {
-  if (lineLoc_ == 0) {
+uint64_t LexicalAnalyzer::getLexAnlzFlag() const { return laContFlags; };
+bool LexicalAnalyzer::isInterpreter() const { return interpreterFlag; };
+bool LexicalAnalyzer::isFromFile() const { return filename != ""; };
+size_t LexicalAnalyzer::getLineCnt() const { return lineCnt; };
+std::string LexicalAnalyzer::getLineString(const size_t line_) const {
+  if (line_ == 0) {
     return "";
   }
-  if (lineLoc_ <= lines.size()) {
-    return lines.at(lineLoc_ - 1);
+  if (line_ <= lines.size()) {
+    return lines.at(line_ - 1);
   }
   return "";
 };
 Tokens *LexicalAnalyzer::getTokens() { return tokens; };
-bool LexicalAnalyzer::isLexAnlzContinue() {
+bool LexicalAnalyzer::isLexAnlzContinue() const {
   return (laContFlags &
           (LaContFlags::LaContFlagsInLiteralRune |
            LaContFlags::LaContFlagsInLiteralString |
@@ -129,7 +127,7 @@ void LexicalAnalyzer::tokenize() {
     if ((laContFlags & LaContFlags::LaContFlagsInCommentOutOneline) > 0) {
       tokenLen = skipTokenSeparator(pos);
       pos += tokenLen;
-      nextToken = new Token(Location(filename, lineLoc, colLoc));
+      nextToken = new Token(location);
       tokenLen = scanningOnelineComment(pos);
       if (tokenLen > 0) {
         pos += tokenLen;
@@ -144,7 +142,7 @@ void LexicalAnalyzer::tokenize() {
       pos += tokenLen;
       tokenLen = toNextLine(pos);
       pos += tokenLen;
-      nextToken = new Token(Location(filename, lineLoc, colLoc));
+      nextToken = new Token(location);
       tokenLen = scanningBlockComment(pos);
       if (tokenLen > 0) {
         pos += tokenLen;
@@ -157,7 +155,7 @@ void LexicalAnalyzer::tokenize() {
                (laContFlags &
                 LaContFlags::LaContFlagsInLiteralRegularExpressionPattern) >
                    0) {
-      nextToken = new Token(Location(filename, lineLoc, colLoc));
+      nextToken = new Token(location);
       tokenLen = scanningRunes(pos);
       if (tokenLen > 0) {
         pos += tokenLen;
@@ -180,7 +178,7 @@ void LexicalAnalyzer::tokenize() {
         break;
       }
     }
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
     tokenLen = scanningToken(pos);
     if (tokenLen > 0) {
       pos += tokenLen;
@@ -195,7 +193,6 @@ size_t LexicalAnalyzer::skipTokenSeparator(const size_t pos_) {
        (*(bufferPtr + pos) == '\t' || *(bufferPtr + pos) == ' ');
        pos++, tokenLen++)
     ;
-  colLoc += tokenLen;
   return tokenLen;
 };
 
@@ -205,8 +202,6 @@ size_t LexicalAnalyzer::toNextLine(const size_t pos_) {
        *(bufferPtr + pos) != '\0' &&
        (*(bufferPtr + pos) == '\r' || *(bufferPtr + pos) == '\n');) {
     if (*(bufferPtr + pos_) == '\r') {
-      colLoc = 1;
-      lineLoc++;
       if (*(bufferPtr + pos_ + 1) == '\n') {
         pos += 2;
         tokenLen += 2;
@@ -215,13 +210,19 @@ size_t LexicalAnalyzer::toNextLine(const size_t pos_) {
         tokenLen++;
       }
     } else if (*(bufferPtr + pos_) == '\n') {
-      colLoc = 1;
-      lineLoc++;
       pos++;
       tokenLen++;
     }
   }
   return tokenLen;
+};
+Location LexicalAnalyzer::computeLocation(const size_t pos_,
+                                          const size_t tokenLen_,
+                                          const Location location_) {
+  std::string filenameN = location_.getFilename();
+  size_t lineN = location_.getLine();
+  size_t columnN = location_.getColumn();
+  return location_;
 };
 
 void LexicalAnalyzer::pushToken(const size_t pos_, const size_t tokenLen_,
@@ -231,7 +232,6 @@ void LexicalAnalyzer::pushToken(const size_t pos_, const size_t tokenLen_,
   TokenTypeEnum tokenType = tokenType_;
   nextToken->setTokenVal(tokenType, token);
   tokens->push(nextToken);
-  lineLoc += nextToken->countNewLineInToken(&colLoc);
 };
 
 size_t LexicalAnalyzer::scanningToken(const size_t pos_) {
@@ -749,11 +749,11 @@ size_t LexicalAnalyzer::scanningSymbolCharacters(const size_t pos_) {
           chr2 = *(bufferPtr + pos_ + 2);
           if (chr2 == '+' || chr2 == '-' || ('0' <= chr2 && chr2 <= '9')) {
             pushToken(pos_, tokenLen, tokenType);
-            nextToken = new Token(Location(filename, lineLoc, colLoc));
+            nextToken = new Token(location);
             // passing exponent charcter [e|E]
             pushToken(pos_ + tokenLen, 1,
                       TokenTypeEnum::literalDecimalNumberExponentOperator);
-            nextToken = new Token(Location(filename, lineLoc, colLoc));
+            nextToken = new Token(location);
             tokenType = TokenTypeEnum::unknown;
             tokenLen++;
           }
@@ -842,7 +842,7 @@ size_t LexicalAnalyzer::scanningNonDecimalNumber(const size_t pos_) {
     tokenType = TokenTypeEnum::literalBinaryPrefix;
     tokenLen = 2;
     pushToken(pos_, tokenLen, tokenType);
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
     numberTokenLen = scanningBinaryNumber(pos_ + tokenLen);
     if (numberTokenLen > 0) {
       tokenLen += numberTokenLen;
@@ -853,7 +853,7 @@ size_t LexicalAnalyzer::scanningNonDecimalNumber(const size_t pos_) {
     tokenType = TokenTypeEnum::literalOctalPrefix;
     tokenLen = 2;
     pushToken(pos_, tokenLen, tokenType);
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
     numberTokenLen = scanningOctalNumber(pos_ + tokenLen);
     if (numberTokenLen > 0) {
       tokenLen += numberTokenLen;
@@ -864,7 +864,7 @@ size_t LexicalAnalyzer::scanningNonDecimalNumber(const size_t pos_) {
     tokenType = TokenTypeEnum::literalHexadecimalPrefix;
     tokenLen = 2;
     pushToken(pos_, tokenLen, tokenType);
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
     numberTokenLen = scanningHexadecimalNumber(pos_ + tokenLen);
     if (numberTokenLen > 0) {
       tokenLen += numberTokenLen;
@@ -897,7 +897,7 @@ size_t LexicalAnalyzer::scanningDecimalNumber(const size_t pos_) {
   }
   if (prevTokenType == TokenTypeEnum::symbolCharacterDot) {
     pushToken(pos_, tokenLen, TokenTypeEnum::literalDecimalNumberDecimalPart);
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
   } else if (prevTokenType ==
                  TokenTypeEnum::literalDecimalNumberExponentOperator ||
              prevTokenType ==
@@ -905,10 +905,10 @@ size_t LexicalAnalyzer::scanningDecimalNumber(const size_t pos_) {
              prevTokenType ==
                  TokenTypeEnum::symbolCharacterPositiveDecimalExponent) {
     pushToken(pos_, tokenLen, TokenTypeEnum::literalDecimalNumberExponentPart);
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
   } else {
     pushToken(pos_, tokenLen, TokenTypeEnum::literalDecimalNumberIntegralPart);
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
   }
   if (tokenLen > 0 && (chr0 == 'e' || chr0 == 'E')) {
     if (prevTokenType == TokenTypeEnum::literalDecimalNumberExponentOperator ||
@@ -923,7 +923,7 @@ size_t LexicalAnalyzer::scanningDecimalNumber(const size_t pos_) {
         // passing exponent charcter [e|E]
         pushToken(pos_ + tokenLen, 1,
                   TokenTypeEnum::literalDecimalNumberExponentOperator);
-        nextToken = new Token(Location(filename, lineLoc, colLoc));
+        nextToken = new Token(location);
         tokenLen++;
       }
     }
@@ -1048,7 +1048,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           size_t nlTokenLen = toNextLine(pos);
           pos += nlTokenLen;
           tokenLen += nlTokenLen;
-          nextToken = new Token(Location(filename, lineLoc, colLoc));
+          nextToken = new Token(location);
           nextTokenPos = pos;
           nextTokenLen = 0;
           continue;
@@ -1058,12 +1058,12 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           tokenLen += 2;
           pushToken(nextTokenPos, nextTokenLen,
                     TokenTypeEnum::literalRuneOctalEscapeSequence);
-          nextToken = new Token(Location(filename, lineLoc, colLoc));
+          nextToken = new Token(location);
           size_t nTokenLen = scanningOctalNumber(pos);
           pos += nTokenLen;
           tokenLen += nTokenLen;
           if (nTokenLen > 0) {
-            nextToken = new Token(Location(filename, lineLoc, colLoc));
+            nextToken = new Token(location);
           }
           nextTokenPos = pos;
           nextTokenLen = 0;
@@ -1074,12 +1074,12 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           tokenLen += 2;
           pushToken(nextTokenPos, nextTokenLen,
                     TokenTypeEnum::literalRuneHexadecimalEscapeSequence);
-          nextToken = new Token(Location(filename, lineLoc, colLoc));
+          nextToken = new Token(location);
           size_t nTokenLen = scanningHexadecimalNumber(pos);
           pos += nTokenLen;
           tokenLen += nTokenLen;
           if (nTokenLen > 0) {
-            nextToken = new Token(Location(filename, lineLoc, colLoc));
+            nextToken = new Token(location);
           }
           nextTokenPos = pos;
           nextTokenLen = 0;
@@ -1090,12 +1090,12 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           tokenLen += 2;
           pushToken(nextTokenPos, nextTokenLen,
                     TokenTypeEnum::literalRuneUnicodePointEscapeSequence);
-          nextToken = new Token(Location(filename, lineLoc, colLoc));
+          nextToken = new Token(location);
           size_t nTokenLen = scanningHexadecimalNumber(pos);
           pos += nTokenLen;
           tokenLen += nTokenLen;
           if (nTokenLen > 0) {
-            nextToken = new Token(Location(filename, lineLoc, colLoc));
+            nextToken = new Token(location);
           }
           nextTokenPos = pos;
           nextTokenLen = 0;
@@ -1106,7 +1106,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           tokenLen += 2;
           pushToken(nextTokenPos, nextTokenLen,
                     TokenTypeEnum::literalEscapeSequence);
-          nextToken = new Token(Location(filename, lineLoc, colLoc));
+          nextToken = new Token(location);
           nextTokenPos = pos;
           nextTokenLen = 0;
           continue;
@@ -1146,7 +1146,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
     } else {
       pushToken(nextTokenPos, nextTokenLen, TokenTypeEnum::literalRune);
     }
-    nextToken = new Token(Location(filename, lineLoc, colLoc));
+    nextToken = new Token(location);
   }
   return tokenLen;
 };
@@ -1173,7 +1173,7 @@ size_t LexicalAnalyzer::scanningOnelineComment(const size_t pos_) {
     }
   }
   laContFlags &= ~LaContFlags::LaContFlagsInCommentOutOneline;
-  nextToken = new Token(Location(filename, lineLoc, colLoc));
+  nextToken = new Token(location);
   return tokenLen;
 };
 
@@ -1210,7 +1210,7 @@ size_t LexicalAnalyzer::scanningBlockComment(const size_t pos_) {
           size_t nlTokenLen = toNextLine(pos);
           pos += nlTokenLen;
           tokenLen += nlTokenLen;
-          nextToken = new Token(Location(filename, lineLoc, colLoc));
+          nextToken = new Token(location);
           nextTokenPos = pos;
           nextTokenLen = 0;
           continue;
@@ -1278,6 +1278,6 @@ size_t LexicalAnalyzer::scanningBlockComment(const size_t pos_) {
                 TokenTypeEnum::commentOutBlockDoc);
     }
   }
-  nextToken = new Token(Location(filename, lineLoc, colLoc));
+  nextToken = new Token(location);
   return tokenLen;
 };

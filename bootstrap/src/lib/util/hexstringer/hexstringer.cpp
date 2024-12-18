@@ -8,8 +8,8 @@ std::string dumpChar(const int8_t &chr) { return dumpChar((u_int8_t)chr); };
 std::string dumpChar(const u_int8_t &chr) {
   return dumpChar((u_int8_t)chr, false);
 };
-std::string dumpChar(const u_int8_t &chr, const bool fixZeroFlag) {
-  if (chr == 0 && !fixZeroFlag) {
+std::string dumpChar(const u_int8_t &chr, const bool fixZeroFlag_) {
+  if (chr == 0 && !fixZeroFlag_) {
     return std::string("");
   }
   std::vector<char> hexCharArr(2);

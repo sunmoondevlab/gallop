@@ -10,13 +10,13 @@ using namespace gallop::Cli;
 using namespace gallop::Compiler::Lexer;
 using namespace gallop::Compiler::Parser;
 
-void Interpreter::execute(Args args) {
+void Interpreter::execute(Args args_) {
   Ast *ast = new Ast(AstNodeTypeEnum::rootInterpreter);
   AstNodeModuleInterpreter *moduleNode = new AstNodeModuleInterpreter();
   ast->getRoot()->putChildNode(moduleNode);
-  // size_t lineLoc = 1, colLoc = 1;
-  // Parser::LexicalAnalyzer l(buf, lineLoc, 0l);
-  ast->printAst(args.isVerboseEmit());
+  // size_t line = 1, column = 1;
+  // Parser::LexicalAnalyzer l(buf, line, 0l);
+  ast->printAst(args_.isVerboseEmit());
   while (std::cin) {
     std::cout << "> ";
     std::string str;
@@ -31,9 +31,9 @@ void Interpreter::execute(Args args) {
       std::cerr << "Unsupport charcter set\n";
       continue;
     }
-    ast->printAst(args.isVerboseEmit());
+    ast->printAst(args_.isVerboseEmit());
     // l.tokenize();
-    // lineLoc = l.getLineLoc();
-    // colLoc = l.getColLoc();
+    // line = l.getLine();
+    // column = l.getColumn();
   }
 };

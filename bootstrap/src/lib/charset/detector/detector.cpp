@@ -40,8 +40,8 @@ std::map<EncodingCharsetEnum, size_t> Detector::initValidCharSets() {
   };
 };
 
-EncodingCharsetEnum Detector::getEncodingCharset() { return charset; };
-size_t Detector::getRuneCount() { return runeCnt; };
+EncodingCharsetEnum Detector::getEncodingCharset() const { return charset; };
+size_t Detector::getRuneCount() const { return runeCnt; };
 
 void Detector::scanningBuffer() {
   if (bufferLen == 0) {

@@ -11,12 +11,12 @@ namespace gallop {
 namespace CharSet {
 class Detector {
 public:
-  Detector(const std::vector<char> &buffer_);
+  Detector(const std::vector<char> &buffer);
   ~Detector() {};
   Detector(const Detector &rhs);
   Detector &operator=(const Detector &rhs);
-  EncodingCharsetEnum getEncodingCharset();
-  size_t getRuneCount();
+  EncodingCharsetEnum getEncodingCharset() const;
+  size_t getRuneCount() const;
 
 private:
   std::vector<char> buffer;
@@ -30,14 +30,8 @@ private:
   void scanningBuffer();
   void detectEcsUtfWithBom();
   void detectEcsByChars();
-  size_t scanning7bitChars(const size_t pos_);
-  size_t scanningUtf8Chars(const size_t pos_);
-  void detectEcsUtf7();
-
-  bool isCharAscii(size_t pos);
-  bool isCharUtf8(size_t pos);
-
-  EncodingCharsetEnum toEncodingCharsetEnumAscii();
+  size_t scanning7bitChars(const size_t pos);
+  size_t scanningUtf8Chars(const size_t pos);
 };
 
 } // namespace CharSet
