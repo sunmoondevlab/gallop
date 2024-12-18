@@ -57,8 +57,7 @@ private:
   void tokenize();
   void splitLinesFromBuffer();
 
-  size_t skipTokenSeparator(const size_t pos);
-  size_t toNextLine(const size_t pos);
+  size_t toNextToken(const size_t pos);
   Location computeLocation(const size_t pos, const size_t tokenLen,
                            const Location location);
   void pushToken(const size_t pos, const size_t tokenLen,

@@ -121,7 +121,8 @@ size_t Detector::scanning7bitChars(const size_t pos_) {
   size_t readLen = 0;
   char chr = *(bufferPtr + pos_);
   for (size_t pos = pos_;
-       pos < bufferLen && ((chr == '\t' || chr == '\r' || chr == '\n') ||
+       pos < bufferLen && ((chr == '\t' || chr == '\v' || chr == '\f' ||
+                            chr == '\r' || chr == '\n') ||
                            (' ' <= chr && chr <= '~'));
        pos++, chr = *(bufferPtr + pos), readLen++, runeCnt++)
     ;

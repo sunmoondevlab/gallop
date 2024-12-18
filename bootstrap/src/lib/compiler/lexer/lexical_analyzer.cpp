@@ -125,10 +125,12 @@ void LexicalAnalyzer::tokenize() {
   for (size_t pos = 0; pos < bufferLen;) {
     size_t tokenLen = 0;
     if ((laContFlags & LaContFlags::LaContFlagsInCommentOutOneline) > 0) {
-      tokenLen = skipTokenSeparator(pos);
+      tokenLen = toNextToken(pos);
+      location = computeLocation(pos, tokenLen, location);
       pos += tokenLen;
       nextToken = new Token(location);
       tokenLen = scanningOnelineComment(pos);
+      location = computeLocation(pos, tokenLen, location);
       if (tokenLen > 0) {
         pos += tokenLen;
         if (pos >= bufferLen) {
@@ -138,12 +140,12 @@ void LexicalAnalyzer::tokenize() {
     } else if ((laContFlags & LaContFlags::LaContFlagsInCommentOutBlock) > 0 ||
                (laContFlags & LaContFlags::LaContFlagsInCommentOutBlockDoc) >
                    0) {
-      tokenLen = skipTokenSeparator(pos);
-      pos += tokenLen;
-      tokenLen = toNextLine(pos);
+      tokenLen = toNextToken(pos);
+      location = computeLocation(pos, tokenLen, location);
       pos += tokenLen;
       nextToken = new Token(location);
       tokenLen = scanningBlockComment(pos);
+      location = computeLocation(pos, tokenLen, location);
       if (tokenLen > 0) {
         pos += tokenLen;
         if (pos >= bufferLen) {
@@ -157,6 +159,7 @@ void LexicalAnalyzer::tokenize() {
                    0) {
       nextToken = new Token(location);
       tokenLen = scanningRunes(pos);
+      location = computeLocation(pos, tokenLen, location);
       if (tokenLen > 0) {
         pos += tokenLen;
         if (pos >= bufferLen) {
@@ -164,14 +167,8 @@ void LexicalAnalyzer::tokenize() {
         }
       }
     }
-    tokenLen = skipTokenSeparator(pos);
-    if (tokenLen > 0) {
-      pos += tokenLen;
-      if (pos >= bufferLen) {
-        break;
-      }
-    }
-    tokenLen = toNextLine(pos);
+    tokenLen = toNextToken(pos);
+    location = computeLocation(pos, tokenLen, location);
     if (tokenLen > 0) {
       pos += tokenLen;
       if (pos >= bufferLen) {
@@ -180,49 +177,53 @@ void LexicalAnalyzer::tokenize() {
     }
     nextToken = new Token(location);
     tokenLen = scanningToken(pos);
+    location = computeLocation(pos, tokenLen, location);
     if (tokenLen > 0) {
       pos += tokenLen;
     }
   }
 };
 
-size_t LexicalAnalyzer::skipTokenSeparator(const size_t pos_) {
+size_t LexicalAnalyzer::toNextToken(const size_t pos_) {
   size_t tokenLen = 0;
   for (size_t pos = pos_ + tokenLen;
        *(bufferPtr + pos) != '\0' &&
-       (*(bufferPtr + pos) == '\t' || *(bufferPtr + pos) == ' ');
+       (*(bufferPtr + pos) == '\t' || *(bufferPtr + pos) == '\f' ||
+        *(bufferPtr + pos) == '\v' || *(bufferPtr + pos) == '\r' ||
+        *(bufferPtr + pos) == '\n' || *(bufferPtr + pos) == ' ');
        pos++, tokenLen++)
     ;
   return tokenLen;
 };
 
-size_t LexicalAnalyzer::toNextLine(const size_t pos_) {
-  size_t tokenLen = 0;
-  for (size_t pos = pos_ + tokenLen;
-       *(bufferPtr + pos) != '\0' &&
-       (*(bufferPtr + pos) == '\r' || *(bufferPtr + pos) == '\n');) {
-    if (*(bufferPtr + pos_) == '\r') {
-      if (*(bufferPtr + pos_ + 1) == '\n') {
-        pos += 2;
-        tokenLen += 2;
-      } else {
-        pos++;
-        tokenLen++;
-      }
-    } else if (*(bufferPtr + pos_) == '\n') {
-      pos++;
-      tokenLen++;
-    }
-  }
-  return tokenLen;
-};
 Location LexicalAnalyzer::computeLocation(const size_t pos_,
                                           const size_t tokenLen_,
                                           const Location location_) {
   std::string filenameN = location_.getFilename();
   size_t lineN = location_.getLine();
   size_t columnN = location_.getColumn();
-  return location_;
+  for (size_t pos = pos_;
+       *(bufferPtr + pos) != '\0' && pos < pos_ + tokenLen_;) {
+    if (*(bufferPtr + pos) == '\r') {
+      if (*(bufferPtr + pos + 1) == '\n') {
+        pos += 2;
+      } else {
+        pos++;
+      }
+      lineN++;
+      columnN = 1;
+      continue;
+    } else if (*(bufferPtr + pos) == '\n') {
+      pos++;
+      lineN++;
+      columnN = 1;
+      continue;
+    } else {
+      pos++;
+      columnN++;
+    }
+  }
+  return Location(filenameN, lineN, columnN);
 };
 
 void LexicalAnalyzer::pushToken(const size_t pos_, const size_t tokenLen_,
@@ -1045,7 +1046,8 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           }
           pos++;
           tokenLen++;
-          size_t nlTokenLen = toNextLine(pos);
+          size_t nlTokenLen = toNextToken(pos);
+          location = computeLocation(pos, tokenLen, location);
           pos += nlTokenLen;
           tokenLen += nlTokenLen;
           nextToken = new Token(location);
@@ -1060,6 +1062,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
                     TokenTypeEnum::literalRuneOctalEscapeSequence);
           nextToken = new Token(location);
           size_t nTokenLen = scanningOctalNumber(pos);
+          location = computeLocation(pos, nTokenLen, location);
           pos += nTokenLen;
           tokenLen += nTokenLen;
           if (nTokenLen > 0) {
@@ -1076,6 +1079,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
                     TokenTypeEnum::literalRuneHexadecimalEscapeSequence);
           nextToken = new Token(location);
           size_t nTokenLen = scanningHexadecimalNumber(pos);
+          location = computeLocation(pos, nTokenLen, location);
           pos += nTokenLen;
           tokenLen += nTokenLen;
           if (nTokenLen > 0) {
@@ -1092,6 +1096,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
                     TokenTypeEnum::literalRuneUnicodePointEscapeSequence);
           nextToken = new Token(location);
           size_t nTokenLen = scanningHexadecimalNumber(pos);
+          location = computeLocation(pos, nTokenLen, location);
           pos += nTokenLen;
           tokenLen += nTokenLen;
           if (nTokenLen > 0) {
@@ -1106,6 +1111,7 @@ size_t LexicalAnalyzer::scanningRunes(const size_t pos_) {
           tokenLen += 2;
           pushToken(nextTokenPos, nextTokenLen,
                     TokenTypeEnum::literalEscapeSequence);
+          location = computeLocation(nextTokenPos, nextTokenLen, location);
           nextToken = new Token(location);
           nextTokenPos = pos;
           nextTokenLen = 0;
@@ -1207,7 +1213,7 @@ size_t LexicalAnalyzer::scanningBlockComment(const size_t pos_) {
           }
           pos++;
           tokenLen++;
-          size_t nlTokenLen = toNextLine(pos);
+          size_t nlTokenLen = toNextToken(pos);
           pos += nlTokenLen;
           tokenLen += nlTokenLen;
           nextToken = new Token(location);
@@ -1263,10 +1269,13 @@ size_t LexicalAnalyzer::scanningBlockComment(const size_t pos_) {
   if ((laContFlags & LaContFlags::LaContFlagsInCommentOutBlock) == 0 &&
       (laContFlags & LaContFlags::LaContFlagsInCommentOutBlockDoc) == 0) {
     size_t tailPos = 0;
-    for (tailPos = 0, chr0 = *(bufferPtr + pos_ + nextTokenLen - tailPos - 1);
+    for (tailPos = 0,
+        chr0 = *(bufferPtr + nextTokenPos + nextTokenLen - tailPos - 1);
          tailPos < nextTokenLen &&
-         (chr0 == ' ' || chr0 == '\t' || chr0 == '\r' || chr0 == '\n');
-         tailPos++, chr0 = *(bufferPtr + pos_ + nextTokenLen - tailPos - 1),
+         (chr0 == '\t' || chr0 == '\f' || chr0 == '\v' || chr0 == '\r' ||
+          chr0 == '\n' || chr0 == ' ');
+         tailPos++,
+        chr0 = *(bufferPtr + nextTokenPos + nextTokenLen - tailPos - 1),
         actualTokenLen--)
       ;
   }
