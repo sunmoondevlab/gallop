@@ -36,7 +36,7 @@ public:
 
 class Ast {
 public:
-  Ast(const AstNodeTypeEnum rootNodeType_);
+  Ast(const AstNodeTypeEnum nodeType_);
   ~Ast() {};
   Ast(const Ast &rhs);
   Ast &operator=(const Ast &rhs);

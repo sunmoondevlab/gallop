@@ -1,3 +1,9 @@
+/#<
+comment out （コメントアウト　ドキュメント用）
+/#>
+//<
+comment out （コメントアウト）
+//>
 #pkgdef pkgdef.pkg;
 #moddef module1;
 

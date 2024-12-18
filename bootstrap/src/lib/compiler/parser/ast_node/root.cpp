@@ -5,8 +5,8 @@
 using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
-AstNodeRoot::AstNodeRoot(const AstNodeTypeEnum rootNodeType_)
-    : astNodeType(rootNodeType_), child(nullptr), moduleIdx(0) {};
+AstNodeRoot::AstNodeRoot(const AstNodeTypeEnum nodeType_)
+    : astNodeType(nodeType_), child(nullptr), moduleIdx(0) {};
 AstNodeRoot::AstNodeRoot(const AstNodeRoot &rhs)
     : astNodeType(rhs.astNodeType), child(rhs.child),
       moduleIdx(rhs.moduleIdx) {};

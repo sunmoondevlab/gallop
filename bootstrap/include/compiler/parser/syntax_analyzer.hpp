@@ -3,6 +3,7 @@
 #include "compiler/lexer/lexical_analyzer.hpp"
 #include "compiler/lexer/token.hpp"
 #include "compiler/parser/ast.hpp"
+#include "compiler/parser/option.hpp"
 #include <set>
 #include <string>
 
@@ -13,7 +14,7 @@ namespace Parser {
 class SyntaxAnalyzer {
 public:
   SyntaxAnalyzer(Lexer::LexicalAnalyzer *const lexicalAnalyzer_,
-                 AstNode *const astNode_);
+                 AstNode *const astNode_,Option parserOption_);
   SyntaxAnalyzer(const SyntaxAnalyzer &rhs);
   SyntaxAnalyzer &operator=(const SyntaxAnalyzer &rhs);
   ~SyntaxAnalyzer() {};
@@ -24,6 +25,7 @@ private:
   Lexer::LexicalAnalyzer *lexicalAnalyzer;
   size_t parsedTokenPos;
   AstNode *astNode;
+  Option parserOption;
   std::set<std::string> includeFilenames;
   std::set<std::string> importModules;
   uint64_t saContFlags;

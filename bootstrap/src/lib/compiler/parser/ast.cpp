@@ -10,8 +10,8 @@ void AstNode::indentDepth(const size_t depth) {
   };
 };
 
-Ast::Ast(const AstNodeTypeEnum rootNodeType_) {
-  root = new AstNodeRoot(rootNodeType_);
+Ast::Ast(const AstNodeTypeEnum nodeType_) {
+  root = new AstNodeRoot(nodeType_);
 };
 Ast::Ast(const Ast &rhs) : root(rhs.root) {};
 Ast &Ast::operator=(const Ast &rhs) {

@@ -36,7 +36,7 @@ void CompilerFromFile::execute(Args args) {
       tokens->printTokens(args.isVerboseEmit());
     }
     AstNodeModuleFile *moduleNode = new AstNodeModuleFile(files[fileIdx]);
-    SyntaxAnalyzer parser(&lexer, moduleNode);
+    SyntaxAnalyzer parser(&lexer, moduleNode, args.getParserOption());
     ast->getRoot()->putChildNode(moduleNode);
     ast->printAst(args.isVerboseEmit());
   }

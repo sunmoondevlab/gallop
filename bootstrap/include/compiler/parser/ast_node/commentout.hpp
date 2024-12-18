@@ -1,5 +1,5 @@
-#ifndef _COMPILER_AST_NODE_ROOT_
-#define _COMPILER_AST_NODE_ROOT_
+#ifndef _COMPILER_AST_NODE_BLOCK_FMAIN_
+#define _COMPILER_AST_NODE_BLOCK_FMAIN_
 #include "compiler/parser/ast.hpp"
 #include <vector>
 
@@ -7,12 +7,12 @@ namespace gallop {
 namespace Compiler {
 namespace Parser {
 
-class AstNodeRoot : public AstNode {
+class AstNodeCommentOut : public AstNode {
 public:
-  AstNodeRoot(const AstNodeTypeEnum nodeType_);
-  ~AstNodeRoot() {};
-  AstNodeRoot(const AstNodeRoot &rhs);
-  AstNodeRoot &operator=(const AstNodeRoot &rhs);
+  AstNodeCommentOut(const AstNodeTypeEnum nodeType_, const Location location_);
+  AstNodeCommentOut(const AstNodeCommentOut &rhs);
+  ~AstNodeCommentOut() {};
+  AstNodeCommentOut &operator=(const AstNodeCommentOut &rhs);
   Location getLocation() override;
   std::string getAstNodeTypeString() override;
   AstNodeTypeEnum getAstNodeType() override;
@@ -28,11 +28,17 @@ public:
   AstNode *putParentNode(AstNode *const node) override;
   AstNode *putNextNode(AstNode *const node) override;
   AstNode *putChildNode(AstNode *const node) override;
+  void setBegenEndLocation(const Location location_, const bool endFlag_);
 
 private:
+  Location location;
+  Location blockBeginLocation;
+  Location blockEndLocation;
   AstNodeTypeEnum astNodeType;
+  AstNode *parent;
   AstNode *child;
-  size_t moduleIdx;
+  AstNode *next;
+  std::string commentOutString;
 };
 
 } // namespace Parser

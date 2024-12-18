@@ -19,13 +19,13 @@ enum class AstNodeTypeEnum : uint32_t {
   moduleFile = (2 << 24) + 1,
   moduleStdin,
   moduleInterpreter,
-  // fmain
-  blockFmain = (3 << 24) + 1,
   // comment out
-  commentOutOneline = 0x22 << 24,
+  commentOutOneline = (3 << 24) + 1,
   commentOutOnelineDoc,
   commentOutBlock,
   commentOutBlockDoc,
+  // fmain
+  blockFmain = (4 << 24) + 1,
   // identifer types
   identifier = 0x22 << 24,
   builtinTypesBool = 0x23 << 24,
