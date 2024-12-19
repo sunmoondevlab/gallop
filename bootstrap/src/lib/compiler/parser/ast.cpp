@@ -22,5 +22,14 @@ Ast &Ast::operator=(const Ast &rhs) {
 AstNode *Ast::getRoot() { return root; }
 
 void Ast::printAst(const bool isVerbose_) {
-  root->printAstNode(0, isVerbose_);
+  std::vector<AstNode *> queue = queueingPrintableAstNode();
+  root->printNode(0, isVerbose_);
+};
+
+std::vector<AstNode *> Ast::queueingPrintableAstNode() const {
+  std::vector<AstNode *> queue;
+  queue.push_back(root);
+  bool hasParentNext = false;
+  AstNode *currentNode = root;
+  return queue;
 };

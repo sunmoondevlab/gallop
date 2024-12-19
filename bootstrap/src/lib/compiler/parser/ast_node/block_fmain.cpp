@@ -6,19 +6,18 @@ using namespace gallop::Compiler::Parser;
 
 AstNodeBlockFmain::AstNodeBlockFmain(const Location location_)
     : location(location_), blockBeginLocation(Location(0, 0)),
-      blockEndLocation(Location(0, 0)),
-      astNodeType(AstNodeTypeEnum::blockFmain), parent(nullptr), prev(nullptr),
-      next(nullptr), child(nullptr) {};
+      blockEndLocation(Location(0, 0)), nodeType(AstNodeTypeEnum::blockFmain),
+      parent(nullptr), prev(nullptr), next(nullptr), child(nullptr) {};
 AstNodeBlockFmain::AstNodeBlockFmain(const AstNodeBlockFmain &rhs)
     : location(rhs.location), blockBeginLocation(rhs.blockBeginLocation),
-      blockEndLocation(rhs.blockEndLocation), astNodeType(rhs.astNodeType),
+      blockEndLocation(rhs.blockEndLocation), nodeType(rhs.nodeType),
       parent(rhs.parent), prev(rhs.prev), next(rhs.next), child(rhs.child) {};
 
 AstNodeBlockFmain &AstNodeBlockFmain::operator=(const AstNodeBlockFmain &rhs) {
   location = rhs.location;
   blockBeginLocation = rhs.blockBeginLocation;
   blockEndLocation = rhs.blockEndLocation;
-  astNodeType = rhs.astNodeType;
+  nodeType = rhs.nodeType;
   parent = rhs.parent;
   prev = rhs.prev;
   next = rhs.next;
@@ -27,14 +26,11 @@ AstNodeBlockFmain &AstNodeBlockFmain::operator=(const AstNodeBlockFmain &rhs) {
 };
 Location AstNodeBlockFmain::getLocation() const { return location; };
 std::string AstNodeBlockFmain::getAstNodeTypeString() const {
-  return AstNodeType::getString(astNodeType);
+  return AstNodeType::getString(nodeType);
 };
-AstNodeTypeEnum AstNodeBlockFmain::getAstNodeType() const {
-  return astNodeType;
-};
+AstNodeTypeEnum AstNodeBlockFmain::getAstNodeType() const { return nodeType; };
 
-void AstNodeBlockFmain::printAstNode(const size_t depth,
-                                     const bool isVerbose_) {
+void AstNodeBlockFmain::printNode(const size_t depth, const bool isVerbose_) {
   indentDepth(depth);
   llvm::outs() << getAstNodeTypeString() << "{\n";
   indentDepth(depth);

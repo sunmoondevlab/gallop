@@ -8,16 +8,15 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeModuleStdin::AstNodeModuleStdin()
-    : astNodeType(AstNodeTypeEnum::moduleStdin), parent(nullptr),
-      child(nullptr), defaultModName("moduleFromStdin"),
-      moduleName("moduleFromStdin") {};
+    : nodeType(AstNodeTypeEnum::moduleStdin), parent(nullptr), child(nullptr),
+      defaultModName("moduleFromStdin"), moduleName("moduleFromStdin") {};
 AstNodeModuleStdin::AstNodeModuleStdin(const AstNodeModuleStdin &rhs)
-    : astNodeType(rhs.astNodeType), parent(rhs.parent), child(rhs.child),
+    : nodeType(rhs.nodeType), parent(rhs.parent), child(rhs.child),
       moduleName(rhs.moduleName) {};
 
 AstNodeModuleStdin &
 AstNodeModuleStdin::operator=(const AstNodeModuleStdin &rhs) {
-  astNodeType = rhs.astNodeType;
+  nodeType = rhs.nodeType;
   parent = rhs.parent;
   child = rhs.child;
   moduleName = rhs.moduleName;
@@ -25,21 +24,20 @@ AstNodeModuleStdin::operator=(const AstNodeModuleStdin &rhs) {
 };
 Location AstNodeModuleStdin::getLocation() const { return Location(0, 0); };
 std::string AstNodeModuleStdin::getAstNodeTypeString() const {
-  return AstNodeType::getString(astNodeType);
+  return AstNodeType::getString(nodeType);
 };
-AstNodeTypeEnum AstNodeModuleStdin::getAstNodeType() const {
-  return astNodeType;
-};
+AstNodeTypeEnum AstNodeModuleStdin::getAstNodeType() const { return nodeType; };
 
-void AstNodeModuleStdin::printAstNode(const size_t depth,
-                                      const bool isVerbose_) {
-  indentDepth(depth);
+void AstNodeModuleStdin::printNode(const size_t depth_, const bool isVerbose_) {
+  indentDepth(depth_);
   llvm::outs() << getAstNodeTypeString() << "{\n";
 
-  indentDepth(depth + 1);
+  indentDepth(depth_ + 1);
   llvm::outs() << "module name: " << moduleName << ",\n";
-
-  indentDepth(depth);
+  if (child != nullptr) {
+    child->printNode(depth_ + 1, isVerbose_);
+  }
+  indentDepth(depth_);
   llvm::outs() << "}\n";
 };
 

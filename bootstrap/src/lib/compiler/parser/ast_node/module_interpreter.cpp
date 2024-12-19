@@ -8,15 +8,15 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeModuleInterpreter::AstNodeModuleInterpreter()
-    : astNodeType(AstNodeTypeEnum::moduleInterpreter), parent(nullptr),
+    : nodeType(AstNodeTypeEnum::moduleInterpreter), parent(nullptr),
       child(nullptr), moduleName("moduleForInterpreter") {};
 AstNodeModuleInterpreter::AstNodeModuleInterpreter(
     const AstNodeModuleInterpreter &rhs)
-    : astNodeType(rhs.astNodeType), parent(rhs.parent), child(rhs.child) {};
+    : nodeType(rhs.nodeType), parent(rhs.parent), child(rhs.child) {};
 
 AstNodeModuleInterpreter &
 AstNodeModuleInterpreter::operator=(const AstNodeModuleInterpreter &rhs) {
-  astNodeType = rhs.astNodeType;
+  nodeType = rhs.nodeType;
   parent = rhs.parent;
   child = rhs.child;
   return *this;
@@ -25,21 +25,23 @@ Location AstNodeModuleInterpreter::getLocation() const {
   return Location(0, 0);
 };
 std::string AstNodeModuleInterpreter::getAstNodeTypeString() const {
-  return AstNodeType::getString(astNodeType);
+  return AstNodeType::getString(nodeType);
 };
 AstNodeTypeEnum AstNodeModuleInterpreter::getAstNodeType() const {
-  return astNodeType;
+  return nodeType;
 };
 
-void AstNodeModuleInterpreter::printAstNode(const size_t depth,
-                                            const bool isVerbose_) {
-  indentDepth(depth);
+void AstNodeModuleInterpreter::printNode(const size_t depth_,
+                                         const bool isVerbose_) {
+  indentDepth(depth_);
   llvm::outs() << getAstNodeTypeString() << "{\n";
 
-  indentDepth(depth + 1);
+  indentDepth(depth_ + 1);
   llvm::outs() << "module name: " << moduleName << ",\n";
-
-  indentDepth(depth);
+  if (child != nullptr) {
+    child->printNode(depth_ + 1, isVerbose_);
+  }
+  indentDepth(depth_);
   llvm::outs() << "}\n";
 };
 

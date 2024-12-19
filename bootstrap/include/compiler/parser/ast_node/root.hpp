@@ -16,7 +16,7 @@ public:
   Location getLocation() const override;
   std::string getAstNodeTypeString() const override;
   AstNodeTypeEnum getAstNodeType() const override;
-  void printAstNode(const size_t depth, const bool isVerbose) override;
+  void printNode(const size_t depth, const bool isVerbose) override;
   bool hasParent() const override;
   bool hasPrev() const override;
   bool hasNext() const override;
@@ -33,7 +33,7 @@ public:
   AstNode *putChildNode(AstNode *const node) override;
 
 private:
-  AstNodeTypeEnum astNodeType;
+  AstNodeTypeEnum nodeType;
   AstNode *child;
   size_t moduleIdx;
 };

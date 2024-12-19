@@ -6,30 +6,24 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeRoot::AstNodeRoot(const AstNodeTypeEnum nodeType_)
-    : astNodeType(nodeType_), child(nullptr), moduleIdx(0) {};
+    : nodeType(nodeType_), child(nullptr), moduleIdx(0) {};
 AstNodeRoot::AstNodeRoot(const AstNodeRoot &rhs)
-    : astNodeType(rhs.astNodeType), child(rhs.child),
-      moduleIdx(rhs.moduleIdx) {};
+    : nodeType(rhs.nodeType), child(rhs.child), moduleIdx(rhs.moduleIdx) {};
 AstNodeRoot &AstNodeRoot::operator=(const AstNodeRoot &rhs) {
-  astNodeType = rhs.astNodeType;
+  nodeType = rhs.nodeType;
   child = rhs.child;
   moduleIdx = rhs.moduleIdx;
   return *this;
 };
 Location AstNodeRoot::getLocation() const { return Location(0, 0); };
 std::string AstNodeRoot::getAstNodeTypeString() const {
-  return AstNodeType::getString(astNodeType);
+  return AstNodeType::getString(nodeType);
 };
-AstNodeTypeEnum AstNodeRoot::getAstNodeType() const { return astNodeType; };
+AstNodeTypeEnum AstNodeRoot::getAstNodeType() const { return nodeType; };
 
-void AstNodeRoot::printAstNode(const size_t depth_, const bool isVerbose_) {
+void AstNodeRoot::printNode(const size_t depth_, const bool isVerbose_) {
   indentDepth(depth_);
-  llvm::outs() << "ast::" << getAstNodeTypeString() << "{\n";
-  if (child != nullptr) {
-    child->printAstNode(depth_ + 1, isVerbose_);
-  }
-  indentDepth(depth_);
-  llvm::outs() << "}\n";
+  llvm::outs() << "ast::" << getAstNodeTypeString() << " =>\n";
 };
 
 bool AstNodeRoot::hasParent() const { return false; };
@@ -39,7 +33,7 @@ bool AstNodeRoot::hasChild() const { return child != nullptr; };
 
 AstNode *AstNodeRoot::rootNode() { return this; };
 AstNode *AstNodeRoot::moduleNode() {
-  if (astNodeType == AstNodeTypeEnum::rootFile) {
+  if (nodeType == AstNodeTypeEnum::rootFile) {
     AstNode *moduleNode = child;
     if (moduleNode == nullptr) {
       return moduleNode;
@@ -61,13 +55,12 @@ AstNode *AstNodeRoot::putParentNode(AstNode *const node_) { return this; };
 AstNode *AstNodeRoot::putPrevNode(AstNode *const node_) { return this; };
 AstNode *AstNodeRoot::putNextNode(AstNode *const node_) { return this; };
 AstNode *AstNodeRoot::putChildNode(AstNode *const node_) {
-  if (child != nullptr && astNodeType == AstNodeTypeEnum::rootFile) {
+  if (child != nullptr && nodeType == AstNodeTypeEnum::rootFile) {
     child->putNextNode(node_);
   } else if (child == nullptr) {
     child = node_;
   } else {
-    throw "can not set multiple child on " +
-        AstNodeType::getString(astNodeType);
+    throw "can not set multiple child on " + AstNodeType::getString(nodeType);
   }
   node_->putParentNode(this);
   return child;

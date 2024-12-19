@@ -17,7 +17,7 @@ public:
   virtual Location getLocation() const = 0;
   virtual AstNodeTypeEnum getAstNodeType() const = 0;
   virtual std::string getAstNodeTypeString() const = 0;
-  virtual void printAstNode(const size_t depth, const bool isVerbose) = 0;
+  virtual void printNode(const size_t depth, const bool isVerbose) = 0;
   virtual bool hasParent() const = 0;
   virtual bool hasPrev() const = 0;
   virtual bool hasNext() const = 0;
@@ -48,6 +48,8 @@ public:
 
 private:
   AstNode *root;
+
+  std::vector<AstNode *> queueingPrintableAstNode() const;
 };
 
 } // namespace Parser

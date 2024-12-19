@@ -72,8 +72,11 @@ size_t SyntaxAnalyzer::scaningCommentOut(const size_t pos_) {
       skipTokenCnt++;
     }
     skipTokenCnt++;
-    if (tokenType == TokenTypeEnum::symbolCharacterSlashSlash &&
-        parserOption.isWithCommentOutAll()) {
+    if ((tokenType == TokenTypeEnum::symbolCharacterSlashSlash &&
+        parserOption.isWithCommentOutAll())||
+        (tokenType == TokenTypeEnum::symbolCharacterSlashNumbersign &&
+             (parserOption.isWithCommentOutAll() ||
+              parserOption.isWithCommentOutForDoc()))) {
       AstNodeCommentOut *coNode = new AstNodeCommentOut(
           tokenType == TokenTypeEnum::symbolCharacterSlashSlash
               ? AstNodeTypeEnum::commentOutOneline
@@ -88,8 +91,8 @@ size_t SyntaxAnalyzer::scaningCommentOut(const size_t pos_) {
         coNode->putPrevNode(currentNode);
         coNode->putParentNode(currentNode->parentNode());
       }
+      currentNode = coNode;
     }
-  } else {
   }
   return skipTokenCnt;
 };

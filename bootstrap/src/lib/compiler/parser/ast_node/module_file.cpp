@@ -8,18 +8,18 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeModuleFile::AstNodeModuleFile(const std::string filename_)
-    : filename(filename_), astNodeType(AstNodeTypeEnum::moduleFile),
+    : filename(filename_), nodeType(AstNodeTypeEnum::moduleFile),
       parent(nullptr), next(nullptr), child(nullptr), defaultPkgName("main"),
       packageName("main"), defaultModName("main"),
       moduleName(File::getBasename(filename_, true)) {};
 AstNodeModuleFile::AstNodeModuleFile(const AstNodeModuleFile &rhs)
-    : filename(rhs.filename), astNodeType(rhs.astNodeType), parent(rhs.parent),
+    : filename(rhs.filename), nodeType(rhs.nodeType), parent(rhs.parent),
       next(rhs.next), child(rhs.child), packageName(rhs.packageName),
       moduleName(rhs.moduleName) {};
 
 AstNodeModuleFile &AstNodeModuleFile::operator=(const AstNodeModuleFile &rhs) {
   filename = rhs.filename;
-  astNodeType = rhs.astNodeType;
+  nodeType = rhs.nodeType;
   parent = rhs.parent;
   next = rhs.next;
   child = rhs.child;
@@ -31,29 +31,28 @@ Location AstNodeModuleFile::getLocation() const {
   return Location(filename, 0, 0);
 };
 std::string AstNodeModuleFile::getAstNodeTypeString() const {
-  return AstNodeType::getString(astNodeType);
+  return AstNodeType::getString(nodeType);
 };
-AstNodeTypeEnum AstNodeModuleFile::getAstNodeType() const {
-  return astNodeType;
-};
+AstNodeTypeEnum AstNodeModuleFile::getAstNodeType() const { return nodeType; };
 
-void AstNodeModuleFile::printAstNode(const size_t depth,
-                                     const bool isVerbose_) {
-  indentDepth(depth);
+void AstNodeModuleFile::printNode(const size_t depth_, const bool isVerbose_) {
+  indentDepth(depth_);
   llvm::outs() << getAstNodeTypeString() << "{\n";
 
-  indentDepth(depth + 1);
+  indentDepth(depth_ + 1);
   llvm::outs() << "filename: " << filename << ",\n";
-  indentDepth(depth + 1);
+  indentDepth(depth_ + 1);
   llvm::outs() << "package name: " << packageName << ",\n";
-  indentDepth(depth + 1);
+  indentDepth(depth_ + 1);
   llvm::outs() << "module name: " << moduleName << ",\n";
-
-  indentDepth(depth);
+  if (child != nullptr) {
+    child->printNode(depth_ + 1, isVerbose_);
+  }
+  indentDepth(depth_);
   llvm::outs() << "}";
   if (next != nullptr) {
     llvm::outs() << ",\n";
-    next->printAstNode(depth, isVerbose_);
+    next->printNode(depth_, isVerbose_);
   } else {
     llvm::outs() << "\n";
   }

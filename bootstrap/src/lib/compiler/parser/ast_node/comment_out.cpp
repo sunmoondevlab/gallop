@@ -7,18 +7,18 @@ using namespace gallop::Compiler::Parser;
 AstNodeCommentOut::AstNodeCommentOut(const AstNodeTypeEnum nodeType_,
                                      const Location location_)
     : location(location_), blockBeginLocation(Location(0, 0)),
-      blockEndLocation(Location(0, 0)), astNodeType(nodeType_), parent(nullptr),
+      blockEndLocation(Location(0, 0)), nodeType(nodeType_), parent(nullptr),
       prev(nullptr), next(nullptr), child(nullptr) {};
 AstNodeCommentOut::AstNodeCommentOut(const AstNodeCommentOut &rhs)
     : location(rhs.location), blockBeginLocation(rhs.blockBeginLocation),
-      blockEndLocation(rhs.blockEndLocation), astNodeType(rhs.astNodeType),
+      blockEndLocation(rhs.blockEndLocation), nodeType(rhs.nodeType),
       parent(rhs.parent), prev(rhs.prev), next(rhs.next), child(rhs.child) {};
 
 AstNodeCommentOut &AstNodeCommentOut::operator=(const AstNodeCommentOut &rhs) {
   location = rhs.location;
   blockBeginLocation = rhs.blockBeginLocation;
   blockEndLocation = rhs.blockEndLocation;
-  astNodeType = rhs.astNodeType;
+  nodeType = rhs.nodeType;
   parent = rhs.parent;
   prev = rhs.prev;
   next = rhs.next;
@@ -27,14 +27,11 @@ AstNodeCommentOut &AstNodeCommentOut::operator=(const AstNodeCommentOut &rhs) {
 };
 Location AstNodeCommentOut::getLocation() const { return location; };
 std::string AstNodeCommentOut::getAstNodeTypeString() const {
-  return AstNodeType::getString(astNodeType);
+  return AstNodeType::getString(nodeType);
 };
-AstNodeTypeEnum AstNodeCommentOut::getAstNodeType() const {
-  return astNodeType;
-};
+AstNodeTypeEnum AstNodeCommentOut::getAstNodeType() const { return nodeType; };
 
-void AstNodeCommentOut::printAstNode(const size_t depth,
-                                     const bool isVerbose_) {
+void AstNodeCommentOut::printNode(const size_t depth, const bool isVerbose_) {
   indentDepth(depth);
   llvm::outs() << getAstNodeTypeString() << "{\n";
   indentDepth(depth);
