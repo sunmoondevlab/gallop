@@ -8,11 +8,11 @@ AstNodeCommentOut::AstNodeCommentOut(const AstNodeTypeEnum nodeType_,
                                      const Location location_)
     : location(location_), blockBeginLocation(location_),
       blockEndLocation(Location(0, 0)), astNodeType(nodeType_), parent(nullptr),
-      child(nullptr), next(nullptr) {};
+      prev(nullptr), next(nullptr), child(nullptr) {};
 AstNodeCommentOut::AstNodeCommentOut(const AstNodeCommentOut &rhs)
     : location(rhs.location), blockBeginLocation(rhs.blockBeginLocation),
       blockEndLocation(rhs.blockEndLocation), astNodeType(rhs.astNodeType),
-      parent(rhs.parent), child(rhs.child), next(rhs.next) {};
+      parent(rhs.parent), prev(rhs.prev), next(rhs.next), child(rhs.child) {};
 
 AstNodeCommentOut &AstNodeCommentOut::operator=(const AstNodeCommentOut &rhs) {
   location = rhs.location;
@@ -20,8 +20,9 @@ AstNodeCommentOut &AstNodeCommentOut::operator=(const AstNodeCommentOut &rhs) {
   blockEndLocation = rhs.blockEndLocation;
   astNodeType = rhs.astNodeType;
   parent = rhs.parent;
-  child = rhs.child;
+  prev = rhs.prev;
   next = rhs.next;
+  child = rhs.child;
   return *this;
 };
 Location AstNodeCommentOut::getLocation() const { return location; };
@@ -40,6 +41,7 @@ void AstNodeCommentOut::printAstNode(const size_t depth,
   llvm::outs() << "}\n";
 };
 bool AstNodeCommentOut::hasParent() const { return parent != nullptr; };
+bool AstNodeCommentOut::hasPrev() const { return prev != nullptr; };
 bool AstNodeCommentOut::hasNext() const { return next != nullptr; };
 bool AstNodeCommentOut::hasChild() const { return child != nullptr; };
 
@@ -62,6 +64,7 @@ AstNode *AstNodeCommentOut::moduleNode() {
   return node;
 };
 AstNode *AstNodeCommentOut::parentNode() { return parent; };
+AstNode *AstNodeCommentOut::prevNode() { return next; };
 AstNode *AstNodeCommentOut::nextNode() { return next; };
 AstNode *AstNodeCommentOut::childNode() { return child; };
 
@@ -69,13 +72,13 @@ AstNode *AstNodeCommentOut::putParentNode(AstNode *const node_) {
   parent = node_;
   return this;
 };
+AstNode *AstNodeCommentOut::putPrevNode(AstNode *const node_) {
+  prev = node_;
+  return next;
+};
 AstNode *AstNodeCommentOut::putChildNode(AstNode *const node_) {
   child = node_;
   return child;
-};
-AstNode *AstNodeCommentOut::putNextNode(AstNode *const node_) {
-  next = node_;
-  return next;
 };
 
 void AstNodeCommentOut::setBegenEndLocation(const Location location_,

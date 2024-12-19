@@ -42,9 +42,9 @@ private:
   std::string filename;
   AstNodeTypeEnum astNodeType;
   AstNode *parent;
+  AstNode *prev;
   AstNode *next;
   AstNode *child;
-  AstNode *prev;
   const std::string defaultPkgName;
   std::string packageName;
   const std::string defaultModName;

@@ -44,6 +44,7 @@ void AstNodeModuleStdin::printAstNode(const size_t depth,
 };
 
 bool AstNodeModuleStdin::hasParent() const { return parent != nullptr; };
+bool AstNodeModuleStdin::hasPrev() const { return false; };
 bool AstNodeModuleStdin::hasNext() const { return false; };
 bool AstNodeModuleStdin::hasChild() const { return child != nullptr; };
 
@@ -56,18 +57,20 @@ AstNode *AstNodeModuleStdin::rootNode() {
 };
 AstNode *AstNodeModuleStdin::moduleNode() { return this; };
 AstNode *AstNodeModuleStdin::parentNode() { return parent; };
-AstNode *AstNodeModuleStdin::nextNode() { return this; };
+AstNode *AstNodeModuleStdin::prevNode() { return nullptr; };
+AstNode *AstNodeModuleStdin::nextNode() { return nullptr; };
 AstNode *AstNodeModuleStdin::childNode() { return child; };
 
 AstNode *AstNodeModuleStdin::putParentNode(AstNode *const node_) {
   parent = node_;
   return this;
 };
+AstNode *AstNodeModuleStdin::putPrevNode(AstNode *const node_) { return this; };
+AstNode *AstNodeModuleStdin::putNextNode(AstNode *const node_) { return this; };
 AstNode *AstNodeModuleStdin::putChildNode(AstNode *const node_) {
   child = node_;
   return child;
 };
-AstNode *AstNodeModuleStdin::putNextNode(AstNode *const node_) { return this; };
 AstNode *AstNodeModuleStdin::getLastModuleNode() {
   AstNode *node = this;
   while (node->hasNext()) {
@@ -75,9 +78,6 @@ AstNode *AstNodeModuleStdin::getLastModuleNode() {
   }
   return node;
 };
-bool AstNodeModuleStdin::hasPrev() const { return false; };
-AstNode *AstNodeModuleStdin::prevNode() { return this; };
-AstNode *AstNodeModuleStdin::putPrevNode(AstNode *const node_) { return this; };
 
 bool AstNodeModuleStdin::isDefinedModName() const {
   return defaultModName != moduleName;

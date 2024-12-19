@@ -60,6 +60,7 @@ void AstNodeModuleFile::printAstNode(const size_t depth,
 };
 
 bool AstNodeModuleFile::hasParent() const { return parent != nullptr; };
+bool AstNodeModuleFile::hasPrev() const { return prev != nullptr; };
 bool AstNodeModuleFile::hasNext() const { return next != nullptr; };
 bool AstNodeModuleFile::hasChild() const { return child != nullptr; };
 
@@ -72,6 +73,7 @@ AstNode *AstNodeModuleFile::rootNode() {
 };
 AstNode *AstNodeModuleFile::moduleNode() { return this; };
 AstNode *AstNodeModuleFile::parentNode() { return parent; };
+AstNode *AstNodeModuleFile::prevNode() { return prev; };
 AstNode *AstNodeModuleFile::nextNode() { return next; };
 AstNode *AstNodeModuleFile::childNode() { return child; };
 
@@ -79,13 +81,17 @@ AstNode *AstNodeModuleFile::putParentNode(AstNode *const node_) {
   parent = node_;
   return this;
 };
-AstNode *AstNodeModuleFile::putChildNode(AstNode *const node_) {
-  child = node_;
-  return child;
+AstNode *AstNodeModuleFile::putPrevNode(AstNode *const node_) {
+  prev = node_;
+  return this;
 };
 AstNode *AstNodeModuleFile::putNextNode(AstNode *const node_) {
   next = node_;
   return next;
+};
+AstNode *AstNodeModuleFile::putChildNode(AstNode *const node_) {
+  child = node_;
+  return child;
 };
 AstNode *AstNodeModuleFile::getLastModuleNode() {
   AstNode *node = this;
@@ -93,12 +99,6 @@ AstNode *AstNodeModuleFile::getLastModuleNode() {
     node = node->parentNode();
   }
   return node;
-};
-bool AstNodeModuleFile::hasPrev() const { return prev != nullptr; };
-AstNode *AstNodeModuleFile::prevNode() { return prev; };
-AstNode *AstNodeModuleFile::putPrevNode(AstNode *const node_) {
-  prev = node_;
-  return this;
 };
 
 bool AstNodeModuleFile::isDefinedPkgName() const {

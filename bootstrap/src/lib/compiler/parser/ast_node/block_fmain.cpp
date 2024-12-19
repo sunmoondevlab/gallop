@@ -7,12 +7,12 @@ using namespace gallop::Compiler::Parser;
 AstNodeBlockFmain::AstNodeBlockFmain(const Location location_)
     : location(location_), blockBeginLocation(Location(0, 0)),
       blockEndLocation(Location(0, 0)),
-      astNodeType(AstNodeTypeEnum::blockFmain), parent(nullptr), child(nullptr),
-      next(nullptr) {};
+      astNodeType(AstNodeTypeEnum::blockFmain), parent(nullptr), prev(nullptr),
+      next(nullptr), child(nullptr) {};
 AstNodeBlockFmain::AstNodeBlockFmain(const AstNodeBlockFmain &rhs)
     : location(rhs.location), blockBeginLocation(rhs.blockBeginLocation),
       blockEndLocation(rhs.blockEndLocation), astNodeType(rhs.astNodeType),
-      parent(rhs.parent), child(rhs.child), next(rhs.next) {};
+      parent(rhs.parent), prev(rhs.prev), next(rhs.next), child(rhs.child) {};
 
 AstNodeBlockFmain &AstNodeBlockFmain::operator=(const AstNodeBlockFmain &rhs) {
   location = rhs.location;
@@ -20,8 +20,9 @@ AstNodeBlockFmain &AstNodeBlockFmain::operator=(const AstNodeBlockFmain &rhs) {
   blockEndLocation = rhs.blockEndLocation;
   astNodeType = rhs.astNodeType;
   parent = rhs.parent;
-  child = rhs.child;
+  prev = rhs.prev;
   next = rhs.next;
+  child = rhs.child;
   return *this;
 };
 Location AstNodeBlockFmain::getLocation() const { return location; };
@@ -40,6 +41,7 @@ void AstNodeBlockFmain::printAstNode(const size_t depth,
   llvm::outs() << "}\n";
 };
 bool AstNodeBlockFmain::hasParent() const { return parent != nullptr; };
+bool AstNodeBlockFmain::hasPrev() const { return prev != nullptr; };
 bool AstNodeBlockFmain::hasNext() const { return next != nullptr; };
 bool AstNodeBlockFmain::hasChild() const { return child != nullptr; };
 
@@ -62,6 +64,7 @@ AstNode *AstNodeBlockFmain::moduleNode() {
   return node;
 };
 AstNode *AstNodeBlockFmain::parentNode() { return parent; };
+AstNode *AstNodeBlockFmain::prevNode() { return prev; };
 AstNode *AstNodeBlockFmain::nextNode() { return next; };
 AstNode *AstNodeBlockFmain::childNode() { return child; };
 
@@ -69,13 +72,17 @@ AstNode *AstNodeBlockFmain::putParentNode(AstNode *const node_) {
   parent = node_;
   return this;
 };
-AstNode *AstNodeBlockFmain::putChildNode(AstNode *const node_) {
-  child = node_;
-  return child;
+AstNode *AstNodeBlockFmain::putPrevNode(AstNode *const node_) {
+  prev = node_;
+  return prev;
 };
 AstNode *AstNodeBlockFmain::putNextNode(AstNode *const node_) {
   next = node_;
   return next;
+};
+AstNode *AstNodeBlockFmain::putChildNode(AstNode *const node_) {
+  child = node_;
+  return child;
 };
 
 void AstNodeBlockFmain::setBegenEndLocation(const Location location_,
