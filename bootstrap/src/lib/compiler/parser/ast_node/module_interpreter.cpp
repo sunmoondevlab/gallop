@@ -33,16 +33,11 @@ AstNodeTypeEnum AstNodeModuleInterpreter::getAstNodeType() const {
 
 void AstNodeModuleInterpreter::printNode(const size_t depth_,
                                          const bool isVerbose_) {
-  indentDepth(depth_);
-  llvm::outs() << getAstNodeTypeString() << "{\n";
+  indentDepth(depth_, true);
+  llvm::outs() << getAstNodeTypeString() << "\n";
 
   indentDepth(depth_ + 1);
   llvm::outs() << "module name: " << moduleName << ",\n";
-  if (child != nullptr) {
-    child->printNode(depth_ + 1, isVerbose_);
-  }
-  indentDepth(depth_);
-  llvm::outs() << "}\n";
 };
 
 bool AstNodeModuleInterpreter::hasParent() const { return parent != nullptr; };

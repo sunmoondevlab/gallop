@@ -33,17 +33,18 @@ public:
   virtual AstNode *putNextNode(AstNode *const node) = 0;
   virtual AstNode *putChildNode(AstNode *const node) = 0;
   static void indentDepth(const size_t depth);
+  static void indentDepth(const size_t depth, const bool isPrintNodeType);
 };
 
 // Children classes of AstNode is Split into separate files
 
-class PritableAstNode {
+class PrintableAstNode {
 public:
-  PritableAstNode(const size_t depth, AstNode *const node,
-                  const bool isVerbose);
-  ~PritableAstNode() {};
-  PritableAstNode(const PritableAstNode &rhs);
-  PritableAstNode &operator=(const PritableAstNode &rhs);
+  PrintableAstNode(const size_t depth, AstNode *const node,
+                   const bool isVerbose);
+  ~PrintableAstNode() {};
+  PrintableAstNode(const PrintableAstNode &rhs);
+  PrintableAstNode &operator=(const PrintableAstNode &rhs);
   void printNode();
 
 private:
@@ -64,7 +65,8 @@ public:
 private:
   AstNode *root;
 
-  std::vector<AstNode *> queueingPrintableAstNode() const;
+  std::vector<PrintableAstNode>
+  queueingPrintableAstNode(const bool isVerbose) const;
 };
 
 } // namespace Parser

@@ -13,6 +13,11 @@ const std::map<AstNodeTypeEnum, std::string> AstNodeType::_map = {
     {AstNodeTypeEnum::moduleFile, "Module(File)"},
     {AstNodeTypeEnum::moduleStdin, "Module(Stdin)"},
     {AstNodeTypeEnum::moduleInterpreter, "Module(Interpreter)"},
+    // comment out
+    {AstNodeTypeEnum::commentOutOneline, "CommentOut"},
+    {AstNodeTypeEnum::commentOutOnelineDoc, "CommentOut For Doc"},
+    {AstNodeTypeEnum::commentOutBlock, "CommentOut"},
+    {AstNodeTypeEnum::commentOutBlockDoc, "CommentOut For Doc"},
     // block fmain
     {AstNodeTypeEnum::blockFmain, "fmain"},
 

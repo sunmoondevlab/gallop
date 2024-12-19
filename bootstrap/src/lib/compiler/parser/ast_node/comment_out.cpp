@@ -31,11 +31,28 @@ std::string AstNodeCommentOut::getAstNodeTypeString() const {
 };
 AstNodeTypeEnum AstNodeCommentOut::getAstNodeType() const { return nodeType; };
 
-void AstNodeCommentOut::printNode(const size_t depth, const bool isVerbose_) {
-  indentDepth(depth);
-  llvm::outs() << getAstNodeTypeString() << "{\n";
-  indentDepth(depth);
-  llvm::outs() << "}\n";
+void AstNodeCommentOut::printNode(const size_t depth_, const bool isVerbose_) {
+  indentDepth(depth_, true);
+  llvm::outs() << getAstNodeTypeString() << "\n";
+  if (isVerbose_) {
+    if (nodeType == AstNodeTypeEnum::commentOutOneline ||
+        nodeType == AstNodeTypeEnum::commentOutOnelineDoc) {
+      indentDepth(depth_ + 1);
+      llvm::outs() << "location: [" << location.getLine() << ","
+                   << location.getColumn() << "]\n";
+    } else {
+      indentDepth(depth_ + 1);
+      llvm::outs() << "beginLocation: [" << blockBeginLocation.getLine() << ","
+                   << blockBeginLocation.getColumn() << "]\n";
+      indentDepth(depth_ + 1);
+      llvm::outs() << "endLocation: [" << blockEndLocation.getLine() << ","
+                   << blockEndLocation.getColumn() << "]\n";
+    }
+  }
+  if (body != "") {
+    indentDepth(depth_ + 1);
+    llvm::outs() << "body: " << body << "\n";
+  }
 };
 bool AstNodeCommentOut::hasParent() const { return parent != nullptr; };
 bool AstNodeCommentOut::hasPrev() const { return prev != nullptr; };
@@ -82,10 +99,7 @@ AstNode *AstNodeCommentOut::putChildNode(AstNode *const node_) {
   return child;
 };
 
-void AstNodeCommentOut::setCommentOutString(
-    const std::string commentOutString_) {
-  commentOutString = commentOutString_;
-};
+void AstNodeCommentOut::setBody(const std::string body_) { body = body_; };
 
 void AstNodeCommentOut::setBegenEndLocation(const Location beginLocation_,
                                             const Location endLocation_) {

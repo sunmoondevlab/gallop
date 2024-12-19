@@ -22,8 +22,8 @@ std::string AstNodeRoot::getAstNodeTypeString() const {
 AstNodeTypeEnum AstNodeRoot::getAstNodeType() const { return nodeType; };
 
 void AstNodeRoot::printNode(const size_t depth_, const bool isVerbose_) {
-  indentDepth(depth_);
-  llvm::outs() << "ast::" << getAstNodeTypeString() << " =>\n";
+  indentDepth(depth_, true);
+  llvm::outs() << "ast::" << getAstNodeTypeString() << "\n";
 };
 
 bool AstNodeRoot::hasParent() const { return false; };

@@ -55,7 +55,7 @@ bool SyntaxAnalyzer::isNodeAtBlockFirst() const {
 
 size_t SyntaxAnalyzer::scaningCommentOut(const size_t pos_) {
   size_t skipTokenCnt = 0;
-  std::string commentOutString = "";
+  std::string body = "";
   Tokens *tokens = lexicalAnalyzer->getTokens();
   size_t tokenCnt = tokens->getTokenCnt();
   Token tokenCoBegin = tokens->get(pos_);
@@ -68,21 +68,21 @@ size_t SyntaxAnalyzer::scaningCommentOut(const size_t pos_) {
     TokenTypeEnum tokenTypeCo = tokenCo.getTokenType();
     if (tokenTypeCo == TokenTypeEnum::commentOutOneline ||
         tokenTypeCo == TokenTypeEnum::commentOutOnelineDoc) {
-      commentOutString = tokenCo.getToken();
+      body = tokenCo.getToken();
       skipTokenCnt++;
     }
     skipTokenCnt++;
     if ((tokenType == TokenTypeEnum::symbolCharacterSlashSlash &&
-        parserOption.isWithCommentOutAll())||
+         parserOption.isWithCommentOutAll()) ||
         (tokenType == TokenTypeEnum::symbolCharacterSlashNumbersign &&
-             (parserOption.isWithCommentOutAll() ||
-              parserOption.isWithCommentOutForDoc()))) {
+         (parserOption.isWithCommentOutAll() ||
+          parserOption.isWithCommentOutForDoc()))) {
       AstNodeCommentOut *coNode = new AstNodeCommentOut(
           tokenType == TokenTypeEnum::symbolCharacterSlashSlash
               ? AstNodeTypeEnum::commentOutOneline
               : AstNodeTypeEnum::commentOutOnelineDoc,
           tokenCoBegin.getLocation());
-      coNode->setCommentOutString(commentOutString);
+      coNode->setBody(body);
       if (isNodeAtBlockFirst()) {
         currentNode->putChildNode(coNode);
         coNode->putParentNode(currentNode);

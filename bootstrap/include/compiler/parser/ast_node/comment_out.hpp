@@ -31,7 +31,7 @@ public:
   AstNode *putPrevNode(AstNode *const node) override;
   AstNode *putNextNode(AstNode *const node) override;
   AstNode *putChildNode(AstNode *const node) override;
-  void setCommentOutString(const std::string commentOutString);
+  void setBody(const std::string body);
   void setBegenEndLocation(const Location beginLocation,
                            const Location endLocation);
 
@@ -44,7 +44,7 @@ private:
   AstNode *prev;
   AstNode *next;
   AstNode *child;
-  std::string commentOutString;
+  std::string body;
 };
 
 } // namespace Parser
