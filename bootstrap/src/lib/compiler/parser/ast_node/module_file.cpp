@@ -9,17 +9,18 @@ using namespace gallop::Compiler::Parser;
 
 AstNodeModuleFile::AstNodeModuleFile(const std::string filename_)
     : filename(filename_), astNodeType(AstNodeTypeEnum::moduleFile),
-      next(nullptr), child(nullptr), defaultPkgName("main"),
+      parent(nullptr), next(nullptr), child(nullptr), defaultPkgName("main"),
       packageName("main"), defaultModName("main"),
       moduleName(File::getBasename(filename_, true)) {};
 AstNodeModuleFile::AstNodeModuleFile(const AstNodeModuleFile &rhs)
-    : filename(rhs.filename), astNodeType(rhs.astNodeType), next(rhs.next),
-      child(rhs.child), packageName(rhs.packageName),
+    : filename(rhs.filename), astNodeType(rhs.astNodeType), parent(rhs.parent),
+      next(rhs.next), child(rhs.child), packageName(rhs.packageName),
       moduleName(rhs.moduleName) {};
 
 AstNodeModuleFile &AstNodeModuleFile::operator=(const AstNodeModuleFile &rhs) {
   filename = rhs.filename;
   astNodeType = rhs.astNodeType;
+  parent = rhs.parent;
   next = rhs.next;
   child = rhs.child;
   packageName = rhs.packageName;
@@ -58,7 +59,7 @@ void AstNodeModuleFile::printAstNode(const size_t depth,
   }
 };
 
-bool AstNodeModuleFile::hasParent() const { return false; };
+bool AstNodeModuleFile::hasParent() const { return parent != nullptr; };
 bool AstNodeModuleFile::hasNext() const { return next != nullptr; };
 bool AstNodeModuleFile::hasChild() const { return child != nullptr; };
 
@@ -70,21 +71,20 @@ AstNode *AstNodeModuleFile::rootNode() {
   return node;
 };
 AstNode *AstNodeModuleFile::moduleNode() { return this; };
-AstNode *AstNodeModuleFile::parentNode() { return nullptr; };
+AstNode *AstNodeModuleFile::parentNode() { return parent; };
 AstNode *AstNodeModuleFile::nextNode() { return next; };
 AstNode *AstNodeModuleFile::childNode() { return child; };
 
 AstNode *AstNodeModuleFile::putParentNode(AstNode *const node_) {
+  parent = node_;
   return this;
 };
 AstNode *AstNodeModuleFile::putChildNode(AstNode *const node_) {
   child = node_;
-  node_->putParentNode(this);
   return child;
 };
 AstNode *AstNodeModuleFile::putNextNode(AstNode *const node_) {
   next = node_;
-  (dynamic_cast<AstNodeModuleFile *>(node_))->putPrevNode(this);
   return next;
 };
 AstNode *AstNodeModuleFile::getLastModuleNode() {

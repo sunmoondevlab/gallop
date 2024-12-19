@@ -8,16 +8,16 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeModuleInterpreter::AstNodeModuleInterpreter()
-    : astNodeType(AstNodeTypeEnum::moduleInterpreter), next(nullptr),
+    : astNodeType(AstNodeTypeEnum::moduleInterpreter), parent(nullptr),
       child(nullptr), moduleName("moduleForInterpreter") {};
 AstNodeModuleInterpreter::AstNodeModuleInterpreter(
     const AstNodeModuleInterpreter &rhs)
-    : astNodeType(rhs.astNodeType), next(rhs.next), child(rhs.child) {};
+    : astNodeType(rhs.astNodeType), parent(rhs.parent), child(rhs.child) {};
 
 AstNodeModuleInterpreter &
 AstNodeModuleInterpreter::operator=(const AstNodeModuleInterpreter &rhs) {
   astNodeType = rhs.astNodeType;
-  next = rhs.next;
+  parent = rhs.parent;
   child = rhs.child;
   return *this;
 };
@@ -40,17 +40,11 @@ void AstNodeModuleInterpreter::printAstNode(const size_t depth,
   llvm::outs() << "module name: " << moduleName << ",\n";
 
   indentDepth(depth);
-  llvm::outs() << "}";
-  if (next != nullptr) {
-    llvm::outs() << ",\n";
-    next->printAstNode(depth, isVerbose_);
-  } else {
-    llvm::outs() << "\n";
-  }
+  llvm::outs() << "}\n";
 };
 
-bool AstNodeModuleInterpreter::hasParent() const { return false; };
-bool AstNodeModuleInterpreter::hasNext() const { return next != nullptr; };
+bool AstNodeModuleInterpreter::hasParent() const { return parent != nullptr; };
+bool AstNodeModuleInterpreter::hasNext() const { return false; };
 bool AstNodeModuleInterpreter::hasChild() const { return child != nullptr; };
 
 AstNode *AstNodeModuleInterpreter::rootNode() {
@@ -62,21 +56,19 @@ AstNode *AstNodeModuleInterpreter::rootNode() {
 };
 AstNode *AstNodeModuleInterpreter::moduleNode() { return this; };
 AstNode *AstNodeModuleInterpreter::parentNode() { return nullptr; };
-AstNode *AstNodeModuleInterpreter::nextNode() { return next; };
+AstNode *AstNodeModuleInterpreter::nextNode() { return this; };
 AstNode *AstNodeModuleInterpreter::childNode() { return child; };
 
 AstNode *AstNodeModuleInterpreter::putParentNode(AstNode *const node_) {
+  parent = node_;
   return this;
 };
 AstNode *AstNodeModuleInterpreter::putChildNode(AstNode *const node_) {
   child = node_;
-  node_->putParentNode(this);
   return child;
 };
 AstNode *AstNodeModuleInterpreter::putNextNode(AstNode *const node_) {
-  next = node_;
-  (dynamic_cast<AstNodeModuleInterpreter *>(node_))->putPrevNode(this);
-  return next;
+  return this;
 };
 AstNode *AstNodeModuleInterpreter::getLastModuleNode() {
   AstNode *node = this;
@@ -85,9 +77,8 @@ AstNode *AstNodeModuleInterpreter::getLastModuleNode() {
   }
   return node;
 };
-bool AstNodeModuleInterpreter::hasPrev() const { return prev != nullptr; };
-AstNode *AstNodeModuleInterpreter::prevNode() { return prev; };
+bool AstNodeModuleInterpreter::hasPrev() const { return false; };
+AstNode *AstNodeModuleInterpreter::prevNode() { return this; };
 AstNode *AstNodeModuleInterpreter::putPrevNode(AstNode *const node_) {
-  prev = node_;
   return this;
 };

@@ -42,6 +42,7 @@ private:
 
   void parse();
 
+  size_t scaningCommentOut(const size_t pos);
   void scaningIdentifier();
   void scaningPackageDef();
 };

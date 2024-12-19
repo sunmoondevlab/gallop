@@ -8,16 +8,17 @@ using namespace gallop::Compiler;
 using namespace gallop::Compiler::Parser;
 
 AstNodeModuleStdin::AstNodeModuleStdin()
-    : astNodeType(AstNodeTypeEnum::moduleStdin), next(nullptr), child(nullptr),
-      defaultModName("moduleFromStdin"), moduleName("moduleFromStdin") {};
+    : astNodeType(AstNodeTypeEnum::moduleStdin), parent(nullptr),
+      child(nullptr), defaultModName("moduleFromStdin"),
+      moduleName("moduleFromStdin") {};
 AstNodeModuleStdin::AstNodeModuleStdin(const AstNodeModuleStdin &rhs)
-    : astNodeType(rhs.astNodeType), next(rhs.next), child(rhs.child),
+    : astNodeType(rhs.astNodeType), parent(rhs.parent), child(rhs.child),
       moduleName(rhs.moduleName) {};
 
 AstNodeModuleStdin &
 AstNodeModuleStdin::operator=(const AstNodeModuleStdin &rhs) {
   astNodeType = rhs.astNodeType;
-  next = rhs.next;
+  parent = rhs.parent;
   child = rhs.child;
   moduleName = rhs.moduleName;
   return *this;
@@ -39,17 +40,11 @@ void AstNodeModuleStdin::printAstNode(const size_t depth,
   llvm::outs() << "module name: " << moduleName << ",\n";
 
   indentDepth(depth);
-  llvm::outs() << "}";
-  if (next != nullptr) {
-    llvm::outs() << ",\n";
-    next->printAstNode(depth, isVerbose_);
-  } else {
-    llvm::outs() << "\n";
-  }
+  llvm::outs() << "}\n";
 };
 
-bool AstNodeModuleStdin::hasParent() const { return false; };
-bool AstNodeModuleStdin::hasNext() const { return next != nullptr; };
+bool AstNodeModuleStdin::hasParent() const { return parent != nullptr; };
+bool AstNodeModuleStdin::hasNext() const { return false; };
 bool AstNodeModuleStdin::hasChild() const { return child != nullptr; };
 
 AstNode *AstNodeModuleStdin::rootNode() {
@@ -60,23 +55,19 @@ AstNode *AstNodeModuleStdin::rootNode() {
   return node;
 };
 AstNode *AstNodeModuleStdin::moduleNode() { return this; };
-AstNode *AstNodeModuleStdin::parentNode() { return nullptr; };
-AstNode *AstNodeModuleStdin::nextNode() { return next; };
+AstNode *AstNodeModuleStdin::parentNode() { return parent; };
+AstNode *AstNodeModuleStdin::nextNode() { return this; };
 AstNode *AstNodeModuleStdin::childNode() { return child; };
 
 AstNode *AstNodeModuleStdin::putParentNode(AstNode *const node_) {
+  parent = node_;
   return this;
 };
 AstNode *AstNodeModuleStdin::putChildNode(AstNode *const node_) {
   child = node_;
-  node_->putParentNode(this);
   return child;
 };
-AstNode *AstNodeModuleStdin::putNextNode(AstNode *const node_) {
-  next = node_;
-  (dynamic_cast<AstNodeModuleStdin *>(node_))->putPrevNode(this);
-  return next;
-};
+AstNode *AstNodeModuleStdin::putNextNode(AstNode *const node_) { return this; };
 AstNode *AstNodeModuleStdin::getLastModuleNode() {
   AstNode *node = this;
   while (node->hasNext()) {
@@ -84,12 +75,9 @@ AstNode *AstNodeModuleStdin::getLastModuleNode() {
   }
   return node;
 };
-bool AstNodeModuleStdin::hasPrev() const { return prev != nullptr; };
-AstNode *AstNodeModuleStdin::prevNode() { return prev; };
-AstNode *AstNodeModuleStdin::putPrevNode(AstNode *const node_) {
-  prev = node_;
-  return this;
-};
+bool AstNodeModuleStdin::hasPrev() const { return false; };
+AstNode *AstNodeModuleStdin::prevNode() { return this; };
+AstNode *AstNodeModuleStdin::putPrevNode(AstNode *const node_) { return this; };
 
 bool AstNodeModuleStdin::isDefinedModName() const {
   return defaultModName != moduleName;

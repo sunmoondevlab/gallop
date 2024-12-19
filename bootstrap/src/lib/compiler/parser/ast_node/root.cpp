@@ -33,6 +33,7 @@ void AstNodeRoot::printAstNode(const size_t depth_, const bool isVerbose_) {
 };
 
 bool AstNodeRoot::hasParent() const { return false; };
+bool AstNodeRoot::hasPrev() const { return false; };
 bool AstNodeRoot::hasNext() const { return false; };
 bool AstNodeRoot::hasChild() const { return child != nullptr; };
 
@@ -52,10 +53,13 @@ AstNode *AstNodeRoot::moduleNode() {
   }
 };
 AstNode *AstNodeRoot::parentNode() { return nullptr; };
+AstNode *AstNodeRoot::prevNode() { return nullptr; };
 AstNode *AstNodeRoot::nextNode() { return nullptr; };
 AstNode *AstNodeRoot::childNode() { return child; };
 
 AstNode *AstNodeRoot::putParentNode(AstNode *const node_) { return this; };
+AstNode *AstNodeRoot::putPrevNode(AstNode *const node_) { return this; };
+AstNode *AstNodeRoot::putNextNode(AstNode *const node_) { return this; };
 AstNode *AstNodeRoot::putChildNode(AstNode *const node_) {
   if (child != nullptr && astNodeType == AstNodeTypeEnum::rootFile) {
     child->putNextNode(node_);
@@ -68,4 +72,3 @@ AstNode *AstNodeRoot::putChildNode(AstNode *const node_) {
   node_->putParentNode(this);
   return child;
 };
-AstNode *AstNodeRoot::putNextNode(AstNode *const node_) { return this; };

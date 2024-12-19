@@ -19,14 +19,17 @@ public:
   virtual std::string getAstNodeTypeString() const = 0;
   virtual void printAstNode(const size_t depth, const bool isVerbose) = 0;
   virtual bool hasParent() const = 0;
+  virtual bool hasPrev() const = 0;
   virtual bool hasNext() const = 0;
   virtual bool hasChild() const = 0;
   virtual AstNode *rootNode() = 0;
   virtual AstNode *moduleNode() = 0;
   virtual AstNode *parentNode() = 0;
+  virtual AstNode *prevNode() = 0;
   virtual AstNode *nextNode() = 0;
   virtual AstNode *childNode() = 0;
   virtual AstNode *putParentNode(AstNode *const node) = 0;
+  virtual AstNode *putPrevNode(AstNode *const node) = 0;
   virtual AstNode *putNextNode(AstNode *const node) = 0;
   virtual AstNode *putChildNode(AstNode *const node) = 0;
   static void indentDepth(const size_t depth);
