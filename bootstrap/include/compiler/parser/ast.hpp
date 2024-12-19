@@ -37,6 +37,21 @@ public:
 
 // Children classes of AstNode is Split into separate files
 
+class PritableAstNode {
+public:
+  PritableAstNode(const size_t depth, AstNode *const node,
+                  const bool isVerbose);
+  ~PritableAstNode() {};
+  PritableAstNode(const PritableAstNode &rhs);
+  PritableAstNode &operator=(const PritableAstNode &rhs);
+  void printNode();
+
+private:
+  size_t depth;
+  AstNode *node;
+  bool isVerbose;
+};
+
 class Ast {
 public:
   Ast(const AstNodeTypeEnum nodeType);

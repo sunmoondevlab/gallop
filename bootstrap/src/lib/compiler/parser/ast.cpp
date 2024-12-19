@@ -10,6 +10,21 @@ void AstNode::indentDepth(const size_t depth_) {
   };
 };
 
+PritableAstNode::PritableAstNode(const size_t depth_, AstNode *const node_,
+                                 const bool isVerbose_)
+    : depth(depth_), node(node_), isVerbose(isVerbose_) {};
+
+PritableAstNode::PritableAstNode(const PritableAstNode &rhs)
+    : depth(rhs.depth), node(rhs.node), isVerbose(rhs.isVerbose) {};
+PritableAstNode &PritableAstNode::operator=(const PritableAstNode &rhs) {
+  depth = rhs.depth;
+  node = rhs.node;
+  isVerbose = rhs.isVerbose;
+  return *this;
+};
+
+void PritableAstNode::printNode() { node->printNode(depth, isVerbose); };
+
 Ast::Ast(const AstNodeTypeEnum nodeType_) {
   root = new AstNodeRoot(nodeType_);
 };
@@ -31,5 +46,9 @@ std::vector<AstNode *> Ast::queueingPrintableAstNode() const {
   queue.push_back(root);
   bool hasParentNext = false;
   AstNode *currentNode = root;
+  if (root->hasChild()) {
+    currentNode = root->childNode();
+    queue.push_back(currentNode);
+  }
   return queue;
 };
