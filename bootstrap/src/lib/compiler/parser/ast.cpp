@@ -69,8 +69,14 @@ Ast::queueingPrintableAstNode(const bool isVerbose_) const {
         depth++;
         currentNode = currentNode->childNode();
         queue.push_back(PrintableAstNode(depth, currentNode, isVerbose_));
-        break;
+        continue;
       }
+      if (currentNode->hasNext()) {
+        currentNode = currentNode->nextNode();
+        queue.push_back(PrintableAstNode(depth, currentNode, isVerbose_));
+        continue;
+      }
+      break;
     }
   }
   return queue;

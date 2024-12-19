@@ -103,6 +103,6 @@ void AstNodeCommentOut::setBody(const std::string body_) { body = body_; };
 
 void AstNodeCommentOut::setBegenEndLocation(const Location beginLocation_,
                                             const Location endLocation_) {
-  blockEndLocation = beginLocation_;
-  blockBeginLocation = endLocation_;
+  blockBeginLocation = beginLocation_;
+  blockEndLocation = endLocation_;
 };

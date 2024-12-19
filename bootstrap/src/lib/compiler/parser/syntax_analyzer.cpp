@@ -60,18 +60,17 @@ size_t SyntaxAnalyzer::scaningCommentOut(const size_t pos_) {
   size_t tokenCnt = tokens->getTokenCnt();
   Token tokenCoBegin = tokens->get(pos_);
   TokenTypeEnum tokenType = tokenCoBegin.getTokenType();
+  skipTokenCnt++;
   if (tokenType == TokenTypeEnum::symbolCharacterSlashSlash ||
       tokenType == TokenTypeEnum::symbolCharacterSlashNumbersign) {
-
     // oneline
-    Token tokenCo = tokens->get(pos_ + 1);
+    Token tokenCo = tokens->get(pos_ + skipTokenCnt);
     TokenTypeEnum tokenTypeCo = tokenCo.getTokenType();
     if (tokenTypeCo == TokenTypeEnum::commentOutOneline ||
         tokenTypeCo == TokenTypeEnum::commentOutOnelineDoc) {
       body = tokenCo.getToken();
       skipTokenCnt++;
     }
-    skipTokenCnt++;
     if ((tokenType == TokenTypeEnum::symbolCharacterSlashSlash &&
          parserOption.isWithCommentOutAll()) ||
         (tokenType == TokenTypeEnum::symbolCharacterSlashNumbersign &&
@@ -83,6 +82,44 @@ size_t SyntaxAnalyzer::scaningCommentOut(const size_t pos_) {
               : AstNodeTypeEnum::commentOutOnelineDoc,
           tokenCoBegin.getLocation());
       coNode->setBody(body);
+      if (isNodeAtBlockFirst()) {
+        currentNode->putChildNode(coNode);
+        coNode->putParentNode(currentNode);
+      } else {
+        currentNode->putNextNode(coNode);
+        coNode->putPrevNode(currentNode);
+        coNode->putParentNode(currentNode->parentNode());
+      }
+      currentNode = coNode;
+    }
+  } else {
+    // block
+    Token tokenCo;
+    TokenTypeEnum tokenTypeCo;
+    size_t pos = pos_ + skipTokenCnt;
+    for (tokenCo = tokens->get(pos), tokenTypeCo = tokenCo.getTokenType();
+         tokenTypeCo == TokenTypeEnum::commentOutBlock ||
+         tokenTypeCo == TokenTypeEnum::commentOutBlockDoc;
+         pos++, skipTokenCnt++, tokenCo = tokens->get(pos),
+        tokenTypeCo = tokenCo.getTokenType()) {
+      body += tokenCo.getToken();
+    }
+    Token tokenCoEnd = tokens->get(pos);
+    skipTokenCnt++;
+    if ((tokenType == TokenTypeEnum::symbolCharacterSlashSlashLess &&
+         parserOption.isWithCommentOutAll()) ||
+        (tokenType == TokenTypeEnum::symbolCharacterSlashNumbersignLess &&
+         (parserOption.isWithCommentOutAll() ||
+          parserOption.isWithCommentOutForDoc()))) {
+      AstNodeCommentOut *coNode = new AstNodeCommentOut(
+          tokenType == TokenTypeEnum::symbolCharacterSlashSlashLess
+              ? AstNodeTypeEnum::commentOutBlock
+              : AstNodeTypeEnum::commentOutBlockDoc,
+          tokenCoBegin.getLocation());
+      coNode->setBody(body);
+      Location endLoc = tokenCoEnd.getLocation();
+      endLoc.addColumn(3);
+      coNode->setBegenEndLocation(tokenCoBegin.getLocation(), endLoc);
       if (isNodeAtBlockFirst()) {
         currentNode->putChildNode(coNode);
         coNode->putParentNode(currentNode);
