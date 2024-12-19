@@ -14,7 +14,7 @@ namespace Parser {
 class SyntaxAnalyzer {
 public:
   SyntaxAnalyzer(Lexer::LexicalAnalyzer *const lexicalAnalyzer,
-                 AstNode *const astNode, Option parserOption);
+                 AstNode *const moduleNode, Option parserOption);
   SyntaxAnalyzer(const SyntaxAnalyzer &rhs);
   SyntaxAnalyzer &operator=(const SyntaxAnalyzer &rhs);
   ~SyntaxAnalyzer() {};
@@ -24,7 +24,8 @@ public:
 private:
   Lexer::LexicalAnalyzer *lexicalAnalyzer;
   size_t parsedTokenPos;
-  AstNode *astNode;
+  AstNode *moduleNode;
+  AstNode *currentNode;
   Option parserOption;
   std::set<std::string> includeFilenames;
   std::set<std::string> importModules;
@@ -41,6 +42,7 @@ private:
   };
 
   void parse();
+  bool isNodeAtBlockFirst() const;
 
   size_t scaningCommentOut(const size_t pos);
   void scaningIdentifier();

@@ -1,5 +1,5 @@
-#ifndef _COMPILER_AST_NODE_BLOCK_FMAIN_
-#define _COMPILER_AST_NODE_BLOCK_FMAIN_
+#ifndef _COMPILER_AST_NODE_COMMENT_OUT_
+#define _COMPILER_AST_NODE_COMMENT_OUT_
 #include "compiler/parser/ast.hpp"
 #include <vector>
 
@@ -31,7 +31,9 @@ public:
   AstNode *putPrevNode(AstNode *const node) override;
   AstNode *putNextNode(AstNode *const node) override;
   AstNode *putChildNode(AstNode *const node) override;
-  void setBegenEndLocation(const Location location, const bool endFlag);
+  void setCommentOutString(const std::string commentOutString);
+  void setBegenEndLocation(const Location beginLocation,
+                           const Location endLocation);
 
 private:
   Location location;

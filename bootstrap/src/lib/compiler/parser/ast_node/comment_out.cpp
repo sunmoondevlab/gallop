@@ -1,4 +1,4 @@
-#include "compiler/parser/ast_node/commentout.hpp"
+#include "compiler/parser/ast_node/comment_out.hpp"
 #include <llvm/Support/raw_ostream.h>
 
 using namespace gallop::Compiler;
@@ -6,7 +6,7 @@ using namespace gallop::Compiler::Parser;
 
 AstNodeCommentOut::AstNodeCommentOut(const AstNodeTypeEnum nodeType_,
                                      const Location location_)
-    : location(location_), blockBeginLocation(location_),
+    : location(location_), blockBeginLocation(Location(0, 0)),
       blockEndLocation(Location(0, 0)), astNodeType(nodeType_), parent(nullptr),
       prev(nullptr), next(nullptr), child(nullptr) {};
 AstNodeCommentOut::AstNodeCommentOut(const AstNodeCommentOut &rhs)
@@ -76,16 +76,22 @@ AstNode *AstNodeCommentOut::putPrevNode(AstNode *const node_) {
   prev = node_;
   return next;
 };
+AstNode *AstNodeCommentOut::putNextNode(AstNode *const node_) {
+  next = node_;
+  return next;
+};
 AstNode *AstNodeCommentOut::putChildNode(AstNode *const node_) {
   child = node_;
   return child;
 };
 
-void AstNodeCommentOut::setBegenEndLocation(const Location location_,
-                                            const bool endFlag_) {
-  if (endFlag_) {
-    blockEndLocation = location_;
-  } else {
-    blockBeginLocation = location_;
-  }
+void AstNodeCommentOut::setCommentOutString(
+    const std::string commentOutString_) {
+  commentOutString = commentOutString_;
+};
+
+void AstNodeCommentOut::setBegenEndLocation(const Location beginLocation_,
+                                            const Location endLocation_) {
+  blockEndLocation = beginLocation_;
+  blockBeginLocation = endLocation_;
 };
